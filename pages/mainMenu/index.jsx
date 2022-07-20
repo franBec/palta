@@ -30,9 +30,9 @@ const index = () => {
   }, []);
 
   return (
-    <>
+    <div className="flex justify-center items-center">
       <Tabla data={paltas} />
-    </>
+    </div>
   );
 };
 

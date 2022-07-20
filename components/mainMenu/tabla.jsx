@@ -2,41 +2,31 @@ import React from "react";
 
 const Tabla = ({ data }) => {
   return (
-    <table class="table-auto">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Nombre</th>
-          <th>Origen</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/* <tr>
-      <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-      <td>Malcolm Lockyer</td>
-      <td>1961</td>
-    </tr>
-    <tr>
-      <td>Witchy Woman</td>
-      <td>The Eagles</td>
-      <td>1972</td>
-    </tr>
-    <tr>
-      <td>Shining Star</td>
-      <td>Earth, Wind, and Fire</td>
-      <td>1975</td>
-    </tr> */}
-
-        {data.map((it, i) => (
-          <tr key={i}>
-            <td>{it._id ?? "-"}</td>
-            <td>{it.data.nombre ?? "-"}</td>
-            <td>{it.data.origen ?? "-"}</td>
-            <td>{}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <table class="text-center">
+          <thead>
+                <tr class="border-b w-full bg-lime-400 border-lime-500">
+                  <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                    ID
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                    Nombre
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                    Orígen
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {data.map((it, i) => (
+                  <tr key={i} className="border-b bg-green-100 border-green-200">
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it._id ?? "-"}</td>
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.data.nombre ?? "-"}</td>
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.data.origen ?? "-"}</td>
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
   );
 };
 
