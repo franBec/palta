@@ -2,22 +2,7 @@ import { useEffect, useState } from "react";
 import Tabla from "../../components/mainMenu/tabla";
 
 const index = () => {
-  const [paltas, setPaltas] = useState([
-    {
-      _id: 1,
-      data: {
-        nombre: "Méndez",
-        origen: "México",
-      },
-    },
-    {
-      _id: 2,
-      data: {
-        nombre: "Criollo",
-        origen: "México",
-      },
-    },
-  ]);
+  const [paltas, setPaltas] = useState([]);
 
   useEffect(() => {
     async function fetchPaltas() {
