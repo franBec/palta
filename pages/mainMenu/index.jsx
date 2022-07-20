@@ -1,23 +1,28 @@
-import { useEffect, useState } from "react";
 import Tabla from "../../components/mainMenu/tabla";
+import useSWR from "swr";
 
 const index = () => {
-  const [paltas, setPaltas] = useState([]);
+  const fetchPaltas = async (url) => {
+    const res = await fetch(url);
+    const resjson = await res.json();
+    return resjson;
+  };
 
-  useEffect(() => {
-    async function fetchPaltas() {
-      const res = await fetch("/api/palta");
-      const data = await res.json();
-      setPaltas(data.data);
+  const { data, error } = useSWR("api/palta", fetchPaltas);
+
+  const renderContent = () => {
+    if (!data) {
+      return <div>loading...</div>;
     }
 
-    fetchPaltas();
-  }, []);
+    if (error) {
+      return <div>failed to load</div>;
+    }
+    return <Tabla data={data.data} />;
+  };
 
   return (
-    <div className="flex justify-center items-center">
-      <Tabla data={paltas} />
-    </div>
+    <div className="flex justify-center items-center">{renderContent()}</div>
   );
 };
 

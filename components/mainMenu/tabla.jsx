@@ -21,11 +21,11 @@ const Tabla = ({ data }) => {
                 </tr>
               </thead>
               <tbody>
-              {data.map((it, i) => (
+              {data?.map((it, i) => (
                   <tr key={i} className="border-b bg-green-100 border-green-200">
-                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it._id ?? "-"}</td>
-                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.data.nombre ?? "-"}</td>
-                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.data.origen ?? "-"}</td>
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.id ?? "-"}</td>
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.nombre ?? "-"}</td>
+                    <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.origen ?? "-"}</td>
                     <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{}</td>
                     <td></td>
                   </tr>
