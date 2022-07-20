@@ -1,16 +1,34 @@
-import React from "react";
+import Image from "next/image";
 
 const Login = () => {
+  const imgSource = "/paltalogo.png";
   return (
     <>
-      <p>
-        ok!! aca vamos a hacer el login (lucas estuvo aqui, kevin igual, y
-        Hernán tambien!)
-      </p>
-      <p>🐤!</p>
-      <p>🐤! en dev</p>
-      <button>entra!</button>
-      <button>salir</button>
+      <div className="drop-shadow-xl rounded-lg bg-gradient-to-r from-white to-lime-500 flex justify-center items-center p-10">
+        <div className="">
+          <Image
+            src={imgSource}
+            alt="Picture of the palta"
+            width={200}
+            height={200}
+          />
+        </div>
+        <div className="px-10 flex flex-col justify-center">
+          <input
+            type="text"
+            placeholder="Usuario"
+            className="p-1 mb-1 border border-lime-500"
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            className=" p-1 mt-1 border border-lime-500"
+          />
+          <button className="mt-5 bg-lime-500 border border-gray-500 p-2">
+            Iniciar sesion
+          </button>
+        </div>
+      </div>
     </>
   );
 };
