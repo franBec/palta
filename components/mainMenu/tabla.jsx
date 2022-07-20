@@ -7,7 +7,7 @@ const Tabla = ({ data }) => {
           <thead>
                 <tr className="border-b w-full bg-lime-400 border-lime-500">
                   <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
-                    ID
+                    ID.
                   </th>
                   <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
                     Nombre
