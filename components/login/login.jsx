@@ -10,6 +10,7 @@ const Login = () => {
       <p>🐤!</p>
       <p>🐤! en dev</p>
       <button>entra!</button>
+      <button>salir</button>
     </>
   );
 };
