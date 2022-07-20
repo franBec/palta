@@ -2,16 +2,16 @@ import React from "react";
 
 const Tabla = ({ data }) => {
   return (
-    <table class="text-center">
+    <table className="text-center">
           <thead>
-                <tr class="border-b w-full bg-lime-400 border-lime-500">
-                  <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                <tr className="border-b w-full bg-lime-400 border-lime-500">
+                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
                     ID
                   </th>
-                  <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
                     Nombre
                   </th>
-                  <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
                     Orígen
                   </th>
                 </tr>
