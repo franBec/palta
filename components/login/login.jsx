@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Login = () => {
   const imgSource = "/paltalogo.png";
@@ -25,7 +26,7 @@ const Login = () => {
             className=" p-1 mt-1 border border-lime-500"
           />
           <button className="mt-5 bg-lime-500 border border-gray-500 p-2">
-            Iniciar sesion
+            <Link href="/mainMenu">Iniciar sesion</Link>
           </button>
         </div>
       </div>
