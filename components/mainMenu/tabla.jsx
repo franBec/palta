@@ -1,4 +1,5 @@
 import React from "react";
+//prettier-ignore
 
 const Tabla = ({ data }) => {
   return (
@@ -14,6 +15,9 @@ const Tabla = ({ data }) => {
                   <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
                     Orígen
                   </th>
+                  <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 w-96">
+                    Acciones
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -23,6 +27,7 @@ const Tabla = ({ data }) => {
                     <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.data.nombre ?? "-"}</td>
                     <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{it.data.origen ?? "-"}</td>
                     <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">{}</td>
+                    <td></td>
                   </tr>
                 ))}
               </tbody>
