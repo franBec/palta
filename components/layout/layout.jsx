@@ -1,8 +1,9 @@
 import React from "react";
+import Footer from "./footer/footer.jsx"
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex flex-col h-screen justify-between">
+    <div className="flex flex-col justify-between">
       <header className="bg-lime-500 h-16">
         <ul className="flex flex-row justify-around h-full items-center">
           <div>
@@ -13,8 +14,10 @@ const Layout = ({ children }) => {
           </div>
         </ul>
       </header>
-      <main className="p-2">{children}</main>
-      <footer className="bg-lime-500 h-10">Copyright Palta project 2022</footer>
+      <main className="p-2 h-screen flex justify-center items-center">{children}</main>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 };
