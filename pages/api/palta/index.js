@@ -24,9 +24,11 @@ export default async function handler(req, res) {
                 errors: errors
             })
         }
-        const resFromController = await paltaController(body)
+
+        const params = body
+        const resFromController = await paltaController(params)
         console.log(resFromController)
-        if(resFromController.succcess){
+        if(resFromController.success){
             return res.status(200).json(resFromController)
         }
         else{
@@ -62,18 +64,15 @@ export default async function handler(req, res) {
         const params = query
         const resFromController = await paltaController(params)
         console.log(resFromController)
-        if(resFromController.succcess){
+        if(resFromController.success){
             return res.status(200).json(resFromController)
         }
         else{
             res.status(500).json(resFromController)
         }
-        
-
       } catch (error) {
         
       }
-
     case "PUT":
       try {
 
