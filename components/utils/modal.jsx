@@ -1,6 +1,6 @@
 //https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/react/modals/large
 
-const Modal = ({ setShowModal, modalTitle, children }) => {
+const Modal = ({ setShowModal, modalTitle, children, savePalta }) => {
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -12,7 +12,9 @@ const Modal = ({ setShowModal, modalTitle, children }) => {
               <h3 className="text-3xl font-semibold">{modalTitle}</h3>
               <button
                 className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                onClick={() => setShowModal(false)}
+                onClick={() =>
+                  setShowModal({ display: false, modo: "lectura" })
+                }
               >
                 <span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
                   ×
@@ -26,14 +28,16 @@ const Modal = ({ setShowModal, modalTitle, children }) => {
               <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={() =>
+                  setShowModal({ display: false, modo: "lectura" })
+                }
               >
                 Close
               </button>
               <button
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={() => savePalta()}
               >
                 Save Changes
               </button>

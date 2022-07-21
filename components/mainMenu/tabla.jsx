@@ -1,19 +1,7 @@
-import { useState } from "react";
-import Modal from "../utils/modal";
-
-const Tabla = ({ data }) => {
-  const [showModal, setShowModal] = useState(false);
-
-  const [paltaInfo, setPaltaInfo] = useState({
-    id: null,
-    nombre: "",
-    origen: "",
-  });
-
+const Tabla = ({ data, setPaltaInfo, setShowModal }) => {
   const handleVerMasClick = (i) => {
     setPaltaInfo(data[i]);
-
-    setShowModal(true);
+    setShowModal({ display: true, modo: "lectura" });
   };
 
   const renderTable = () => {
@@ -74,25 +62,7 @@ const Tabla = ({ data }) => {
     );
   };
 
-  const renderModal = () => {
-    return (
-      <Modal setShowModal={setShowModal} modalTitle="Detalles de la palta 🥑">
-        <>
-          <div>
-            <p>Nombre: {paltaInfo.nombre}</p>
-            <p>Origen: {paltaInfo.origen}</p>
-          </div>
-        </>
-      </Modal>
-    );
-  };
-
-  return (
-    <>
-      {renderTable()}
-      {showModal && renderModal()}
-    </>
-  );
+  return renderTable();
 };
 
 export default Tabla;

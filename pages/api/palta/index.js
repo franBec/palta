@@ -48,7 +48,8 @@ export default async function handler(req, res) {
     case "GET":
       try {
         console.log(new Date().toUTCString() + ' api/palta/index.js -> GET requested! query = '+JSON.stringify(query))
-        if(query && Object.keys(query).length === 0 && Object.getPrototypeOf(query) === Object.prototype){
+        if(! query.action){
+            
             log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró params para llamar en paltaControler'
             console.log(log)
             errors.push(log)
@@ -102,7 +103,7 @@ export default async function handler(req, res) {
         const resFromController = await paltaController(params)
         console.log("respuesta")
         console.log(resFromController)
-        if(resFromController.succcess){
+        if(resFromController.success){
             return res.status(200).json(resFromController)
         }else{
           return res.status(500).json(resFromController)
@@ -119,6 +120,6 @@ export default async function handler(req, res) {
       }
 
     default:
-      return res.status(405).json({});
+      return res.status(405).json({success: false, errors:['Metodo no soportado -Los pibes de runa']});
   }
 }
