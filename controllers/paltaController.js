@@ -11,6 +11,9 @@ const paltaController = async (params) => {
     case "findAll":
       resultados = findAll();
       return resultados;
+      case "deleteById":
+        resultados = deleteById(params.id);
+        return resultados;
   }
 };
 
@@ -30,6 +33,27 @@ const findAll = async () => {
     data: data,
     errors: [],
   };
+};
+
+const deleteById = async (id) => {
+
+  console.log("entroo")
+
+  try {
+    const deletePalta = await prisma.Palta.delete({ where: { id: id,}, })
+
+    return {
+      succcess: true,
+      data: deletePalta,
+      errors: [],
+    };
+  } catch (error) {
+    return {
+      succcess: false,
+      data: [],
+      errors: [error],
+    };
+  }
 };
 
 export default paltaController;
