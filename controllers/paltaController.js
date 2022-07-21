@@ -1,32 +1,37 @@
 import prisma from "../db/prisma";
 
 const paltaController = async (params) => {
-  console.table(params);
-  var resultados;
+  console.log(
+    new Date().toUTCString() +
+      " controllers/paltaController.js -> params = " +
+      params
+  );
+
+  console.log("Params.action es: " + params.action);
 
   switch (params.action) {
     case "findById":
-      resultados = findById(params.id);
-      return resultados;
+      return findById(params.id);
     case "findAll":
-      resultados = findAll();
-      return resultados;
+      return findAll();
     case "create":
-      resultados = create(params);
-      return resultados;
+      return create(params);
     case "deleteById":
-      resultados = deleteById(params.id);
-      return resultados;
+      return deleteById(params.id);
     case "update":
-      resultados = update(params);
-      return resultados;
+      return update(params);
+    default:
+      console.log(
+        new Date().toUTCString() +
+          " controllers/paltaController.js -> Action no válido!"
+      );
   }
 };
 
 const findById = (id) => {
   console.log(id);
   return {
-    succcess: true,
+    success: true,
     data: [],
     errors: ["Algo salio muy mal en el servidor, intenta mas tarde"],
   };
@@ -35,7 +40,7 @@ const findById = (id) => {
 const findAll = async () => {
   const data = await prisma.Palta.findMany();
   return {
-    succcess: true,
+    success: true,
     data: data,
     errors: [],
   };
@@ -43,13 +48,13 @@ const findAll = async () => {
 
 const create = async (params) => {
   try {
-    console.log("create: ",params)
+    console.log("create: ", params);
     const palta = await prisma.Palta.create({
       data: {
-        nombre:params.nombre,
-        origen:params.origen
+        nombre: params.nombre,
+        origen: params.origen,
       },
-    })
+    });
     return {
       success: true,
       data: palta,
@@ -59,26 +64,27 @@ const create = async (params) => {
     return {
       success: false,
       data: [],
-      errors: ["Palta - create: Algo salio muy mal en el servidor, intenta mas tarde"],
+      errors: [
+        "Palta - create: Algo salio muy mal en el servidor, intenta mas tarde",
+      ],
     };
   }
 };
 
 const deleteById = async (id) => {
-
-  console.log("entroo")
+  console.log("entroo");
 
   try {
-    const deletePalta = await prisma.Palta.delete({ where: { id: id,}, })
+    const deletePalta = await prisma.Palta.delete({ where: { id: id } });
 
     return {
-      succcess: true,
+      success: true,
       data: deletePalta,
       errors: [],
     };
   } catch (error) {
     return {
-      succcess: false,
+      success: false,
       data: [],
       errors: [error],
     };
@@ -86,9 +92,9 @@ const deleteById = async (id) => {
 };
 
 const update = async (params) => {
-  console.log("my params ")
-  console.table(params)
-  try{
+  console.log("my params ");
+  console.table(params);
+  try {
     const response = await prisma.Palta.update({
       where: {
         id: parseInt(params.id),
@@ -97,20 +103,20 @@ const update = async (params) => {
         nombre: params.nombre,
         origen: params.origen,
       },
-    })
-    console.log("my response ")
-    console.table(response)
-  }catch(error){
-    console.error(error)
+    });
+    console.log("my response ");
+    console.table(response);
+  } catch (error) {
+    console.error(error);
     return {
-      succcess: false,
+      success: false,
       data: [],
       errors: ["Algo salio muy mal en el servidor, intenta mas tarde", error],
     };
   }
 
   return {
-    succcess: true,
+    success: true,
     data: [],
     errors: [],
   };
