@@ -1,5 +1,5 @@
 import Tabla from "../../components/mainMenu/tabla";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 
 const index = () => {
   const fetchPaltas = async (url) => {
@@ -8,7 +8,10 @@ const index = () => {
     return resjson;
   };
 
-  const { data, error } = useSWR("api/palta", fetchPaltas);
+  const { data, error } = useSWRImmutable(
+    "api/palta?action=findAll",
+    fetchPaltas
+  );
 
   const renderContent = () => {
     if (!data) {
