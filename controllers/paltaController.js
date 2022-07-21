@@ -11,9 +11,12 @@ const paltaController = async (params) => {
     case "findAll":
       resultados = findAll();
       return resultados;
-      case "deleteById":
-        resultados = deleteById(params.id);
-        return resultados;
+    case "deleteById":
+      resultados = deleteById(params.id);
+      return resultados;
+    case "update":
+      resultados = update(params);
+      return resultados;
   }
 };
 
@@ -54,6 +57,37 @@ const deleteById = async (id) => {
       errors: [error],
     };
   }
+};
+
+const update = async (params) => {
+  console.log("my params ")
+  console.table(params)
+  try{
+    const response = await prisma.Palta.update({
+      where: {
+        id: parseInt(params.id),
+      },
+      data: {
+        nombre: params.nombre,
+        origen: params.origen,
+      },
+    })
+    console.log("my response ")
+    console.table(response)
+  }catch(error){
+    console.error(error)
+    return {
+      succcess: false,
+      data: [],
+      errors: ["Algo salio muy mal en el servidor, intenta mas tarde", error],
+    };
+  }
+
+  return {
+    succcess: true,
+    data: [],
+    errors: [],
+  };
 };
 
 export default paltaController;

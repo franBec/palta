@@ -11,8 +11,38 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
-      } catch (error) {}
-
+        console.log(new Date().toUTCString() + ' api/palta/index.js -> POST requested! body = '+JSON.stringify(body))
+        if(body && Object.keys(body).length === 0 && Object.getPrototypeOf(body) === Object.prototype){
+            log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró body para llamar en paltaControler'
+            console.log(log)
+            errors.push(log)
+            
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                data: [],
+                errors: errors
+            })
+        }
+        const resFromController = await paltaController(body)
+        console.log(resFromController)
+        if(resFromController.succcess){
+            return res.status(200).json(resFromController)
+        }
+        else{
+            res.status(500).json(resFromController)
+        }
+      } catch (error) {
+        console.error(error)
+        errors.push(log)
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          data: [],
+          errors: errors
+      })
+      }
+    break;
     case "GET":
       try {
         console.log(new Date().toUTCString() + ' api/palta/index.js -> GET requested! query = '+JSON.stringify(query))
