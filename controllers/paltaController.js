@@ -20,6 +20,8 @@ const paltaController = async (params) => {
       return deleteById(params.id);
     case "update":
       return update(params);
+    case "login":
+      return login(params);
     default:
       console.log(
         new Date().toUTCString() +
@@ -28,6 +30,7 @@ const paltaController = async (params) => {
   }
 };
 
+//CRUD Paltas
 const findById = (id) => {
   console.log(id);
   return {
@@ -120,6 +123,45 @@ const update = async (params) => {
     data: [],
     errors: [],
   };
+};
+
+//LOGIN Paltas
+const login = async (params) => {
+  try {
+    const user = await prisma.User.findUnique({
+      where: {
+        email: params.usuario
+      },
+    });
+    console.log("login - User: ",user)
+    if(user){
+      if(!(user.name === params.password)){
+        return {
+          success: false,
+          data: []
+        };
+      }
+      return {
+        success: true,
+        data: user,
+        errors: [],
+      };
+    }else{
+      return {
+        success: false,
+        data: []
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      data: [],
+      errors: [
+        "Palta - login: Algo salio muy mal en el servidor, intenta mas tarde",
+        error
+      ],
+    };
+  }
 };
 
 export default paltaController;

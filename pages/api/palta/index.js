@@ -47,6 +47,7 @@ export default async function handler(req, res) {
     break;
     case "GET":
       try {
+        console.log("ACA GET",method, body, query)
         console.log(new Date().toUTCString() + ' api/palta/index.js -> GET requested! query = '+JSON.stringify(query))
         if(! query.action){
             
@@ -72,14 +73,22 @@ export default async function handler(req, res) {
             res.status(500).json(resFromController)
         }
       } catch (error) {
-        
+        console.error(error)
+        errors.push(log)
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          data: [],
+          errors: errors
+      })
       }
+      break;
     case "PUT":
       try {
 
 
       } catch (error) {}
-
+      break;
     case "DELETE":
       try {
 
@@ -118,7 +127,7 @@ export default async function handler(req, res) {
           errors: [error]
       })
       }
-
+      break;
     default:
       return res.status(405).json({success: false, errors:['Metodo no soportado -Los pibes de runa']});
   }
