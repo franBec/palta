@@ -24,6 +24,7 @@ const findById = (id) => {
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> findById  id= " + id);
 
   return {
+    status: 500,
     success: false,
     data: [],
     errors: ["en desarrollo"],
@@ -41,6 +42,7 @@ const findAll = async (params) => {
     const count = await prisma.Palta.count()
 
     return {
+      status: data? 200:404,
       success: true,
       data: data,
       errors: [],
@@ -52,6 +54,7 @@ const findAll = async (params) => {
     };
   } catch (error) {
     return {
+      status: 500,
       success: false,
       data: data,
       errors: [errorGen, error.toString()],
@@ -69,12 +72,14 @@ const create = async (params) => {
       },
     });
     return {
+      status: 200,
       success: true,
       data: palta,
       errors: [],
     };
   } catch (error) {
     return {
+      status: 500,
       success: false,
       data: [],
       errors: [errorGen,error.toString()],
@@ -89,12 +94,14 @@ const deleteById = async (id) => {
     const deletePalta = await prisma.Palta.delete({ where: { id: id } });
 
     return {
+      status:200,
       success: true,
       data: deletePalta,
       errors: [],
     };
   } catch (error) {
     return {
+      status: 500,
       success: false,
       data: [],
       errors: [errorGen, error.toString()],
@@ -117,6 +124,7 @@ const update = async (params) => {
     });
 
     return {
+      status: 200,
       success: true,
       data: response,
       errors: [],
@@ -124,6 +132,7 @@ const update = async (params) => {
 
   } catch (error) {
     return {
+      status: 500,
       success: false,
       data: [],
       errors: [errorGen, error.toString()],
@@ -133,6 +142,7 @@ const update = async (params) => {
 
 const methodNotFound = () => (
   {
+    status: 400,
     success: false,
     data: {},
     errors: [new Date().toUTCString() + ' controllers/paltaController.js ->  method Not Found'],
