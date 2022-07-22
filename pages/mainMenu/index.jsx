@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { useState } from "react";
 import Modal from "../../components/utils/modal";
 import { GiAvocado } from "react-icons/gi";
+import ShowMsj from "../../components/layout/showMsj/showMsj";
 
 const index = () => {
   //*contenido principal
@@ -18,18 +19,26 @@ const index = () => {
     fetchPaltas
   );
 
+  //error stuff
+  const [msjContent, setMsjContent] = useState("")
+  const [isHidden, setisHidden] = useState(true)
+  const [isError, setisError] = useState(true)
+
   const renderMainContent = () => {
     if (!data) {
       return (
-        <div>
-          loading...
-          <GiAvocado />
-        </div>
+        <div role="status">
+          <svg aria-hidden="true" className="flex justify-center text-lime-500 items-center mr-2 w-8 h-8 animate-spin " viewBox="0 0 50 50" style={{width: "150px", height: "150px"}}>
+            <GiAvocado />
+          </svg>
+      </div>
       );
     }
 
     if (error) {
-      return <div>failed to load</div>;
+      setMsjContent(error.toString())
+      setisHidden(false)
+      setisError(true)
     }
 
     return (
@@ -51,6 +60,9 @@ const index = () => {
             deletePalta={deletePalta}
           />
         </div>
+        <ShowMsj isHidden={isHidden} setisHidden={setisHidden} isError={isError}>
+          {msjContent}
+        </ShowMsj>
       </div>
     );
   };
@@ -88,7 +100,21 @@ const index = () => {
 
     const resFromBackend = await res.json();
     console.log(resFromBackend);
-    //agregar controles si todo salio bien
+
+    //control si falla
+    if(!resFromBackend?.success){
+      setMsjContent(resFromBackend.errors[0].toString())
+      resFromBackend.errors.map((error) => {
+        console.log("ERROR - savePalta - " + error)
+      })
+      setisHidden(false)
+      setisError(true)
+    }else{ //control si todo ok
+      setMsjContent("Palta creada exitosamente!")
+      setisHidden(false)
+      setisError(false)
+    }
+
     setShowModal({ display: false, modo: "lectura" });
     mutate("api/palta?action=findAll");
   };
