@@ -1,5 +1,17 @@
 import paltaController from "../../../controllers/paltaController";
 
+/* 
+  Todo respuesta de esta api, tiene la siguiente estructura:
+  {
+    status: number,
+    success: boolean,
+    errors: [string],
+    data: [{object}],
+    metaData: {object},
+  }
+  - metaData opcional
+*/
+
 //prettier-ignore
 export default async function handler(req, res) {
   const { method, body, query } = req;
@@ -12,114 +24,148 @@ export default async function handler(req, res) {
     case "POST":
       try {
         console.log(new Date().toUTCString() + ' api/palta/index.js -> POST requested! body = '+JSON.stringify(body))
-        if(body && Object.keys(body).length === 0 && Object.getPrototypeOf(body) === Object.prototype){
-            log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró body para llamar en paltaControler'
+        if(!body?.action || body?.action !== "create"){
+            log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaController'
             console.log(log)
             errors.push(log)
             
             return res.status(400).json({
-                status: 400,
-                success: false,
-                data: [],
-                errors: errors
+              status: 400,
+              success: false,
+              data: [],
+              errors: errors
             })
         }
 
-        const params = body
-        const resFromController = await paltaController(params)
-        console.log(resFromController)
+        const resFromController = await paltaController(body)
+        console.log(new Date().toUTCString() + " api/palta/index.js -> POST resFromController = " + JSON.stringify(resFromController))
         if(resFromController.success){
-            return res.status(200).json(resFromController)
+          return res.status(200).json(resFromController)
         }
         else{
-            res.status(500).json(resFromController)
+          return res.status(500).json(resFromController)
         }
       } catch (error) {
-        console.error(error)
-        errors.push(log)
-        return res.status(400).json({
-          status: 400,
+        log = new Date().toUTCString() + " api/palta/index.js -> POST error = " + error.toString();
+        errors.push(log);
+        console.error(log);
+        return res.status(500).json({
+          status: 500,
           success: false,
           data: [],
           errors: errors
-      })
+        });
       }
     break;
     case "GET":
       try {
         console.log(new Date().toUTCString() + ' api/palta/index.js -> GET requested! query = '+JSON.stringify(query))
-        if(! query.action){
-            
-            log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró params para llamar en paltaControler'
+        if(! query?.action || body?.action !== "findAll"){
+            log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaControler'
             console.log(log)
             errors.push(log)
             
             return res.status(400).json({
-                status: 400,
-                success: false,
-                data: [],
-                errors: errors
+              status: 400,
+              success: false,
+              data: [],
+              errors: errors
             })
         }
 
-        const params = query
-        const resFromController = await paltaController(params)
-        console.log(resFromController)
+        const resFromController = await paltaController(query)
+        console.log(new Date().toUTCString() + " api/palta/index.js -> GET resFromController = " + JSON.stringify(resFromController) )
         if(resFromController.success){
             return res.status(200).json(resFromController)
         }
         else{
-            res.status(500).json(resFromController)
+            return res.status(500).json(resFromController)
         }
       } catch (error) {
-        
+        log = new Date().toUTCString() + " api/palta/index.js -> GET error = " + error.toString();
+        errors.push(log);
+        console.error(log);
+        return res.status(500).json({
+          status: 500,
+          success: false,
+          data: [],
+          errors: errors
+        });
       }
+    break;
     case "PUT":
       try {
+        console.log(new Date().toUTCString() + ' api/palta/index.js -> PUT requested! body = '+JSON.stringify(body))
+        if(!body?.action || body?.action !== "update"){
+          log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaController'
+          console.log(log)
+          errors.push(log)
+          
+          return res.status(400).json({
+            status: 400,
+            success: false,
+            data: [],
+            errors: errors
+          })
+        }
 
-
-      } catch (error) {}
-
+        const resFromController = await paltaController(body)
+        console.log(new Date().toUTCString() + " api/palta/index.js -> PUT resFromController = " + JSON.stringify(resFromController))
+        if(resFromController.success){
+          return res.status(200).json(resFromController)
+        }
+        else{
+          return res.status(500).json(resFromController)
+        }
+      } catch (error) {
+        log = new Date().toUTCString() + " api/palta/index.js -> PUT error = " + error.toString();
+        errors.push(log);
+        console.error(log);
+        return res.status(500).json({
+          status: 500,
+          success: false,
+          data: [],
+          errors: errors
+        });
+      };
+    break;
     case "DELETE":
       try {
-
         console.log(new Date().toUTCString() + ' api/palta/index.js -> DELETE requested! body = '+JSON.stringify(body))
-        if(body && Object.keys(body).length === 0 && Object.getPrototypeOf(body) === Object.prototype){
-            log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró body para llamar en paltaControler'
-            console.log(log)
-            errors.push(log)
-            
-            return res.status(400).json({
-                status: 400,
-                success: false,
-                data: [],
-                errors: errors
-            })
+        if(!body?.action || body?.action !== "deleteById"){
+          log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró action o no es valido para llamar en paltaControler'
+          console.log(log)
+          errors.push(log)
+          
+          return res.status(400).json({
+            status: 400,
+            success: false,
+            data: [],
+            errors: errors
+          })
         }
-        
-        console.log(body)
 
-        const params = body
-        const resFromController = await paltaController(params)
-        console.log("respuesta")
-        console.log(resFromController)
+        const resFromController = await paltaController(body)
+        console.log(new Date().toUTCString() + " api/palta/index.js -> DELETE resFromController = " + JSON.stringify(resFromController) )
         if(resFromController.success){
-            return res.status(200).json(resFromController)
+          return res.status(200).json(resFromController)
         }else{
           return res.status(500).json(resFromController)
         }
 
       } catch (error) {
-        console.log(error)
+        log = new Date().toUTCString() + " api/palta/index.js -> DELETE error = " + error.toString();
+        errors.push(log);
+        console.error(log);
         return res.status(500).json({
-          status: 400,
+          status: 500,
           success: false,
           data: [],
-          errors: [error]
-      })
+          errors: errors
+        });
       }
-
+    break;
     default:
-      return res.status(405).json({success: false, errors:['Metodo no soportado -Los pibes de runa']});
+      return res.status(405).json({success: false, data:{}, errors:['Metodo no soportado -Los pibes de runa']});
   }
 }

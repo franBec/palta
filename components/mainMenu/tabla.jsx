@@ -1,8 +1,17 @@
-const Tabla = ({ data, setPaltaInfo, setShowModal }) => {
+const Tabla = ({ data, setPaltaInfo, setShowModal, deletePalta }) => {
   const handleVerMasClick = (i) => {
     setPaltaInfo(data[i]);
     setShowModal({ display: true, modo: "lectura" });
   };
+
+  const handleEliminarClick = (i) => {
+    deletePalta(i)
+  };
+  
+  const handleEditarClick = (i) => {
+    setPaltaInfo(data[i]);
+    setShowModal({ display: true, modo: "editar" });
+  }
 
   const renderTable = () => {
     return (
@@ -50,9 +59,15 @@ const Tabla = ({ data, setPaltaInfo, setShowModal }) => {
               <td>
                 <button
                   onClick={() => handleVerMasClick(i)}
-                  className="p-2 bg-slate-500 text-white"
+                  className="border-2 border-blue-300 hover:bg-blue-500 hover:text-white p-3 rounded-md"
                 >
-                  Ver mas...
+                  Detalles
+                </button>
+                <button className="border-2 ml-2 border-yellow-300 hover:bg-yellow-500 hover:text-white px-5 py-3 rounded-md" onClick={() => handleEditarClick(i)}>
+                  Editar
+                </button>
+                <button className="ml-2 border-2 border-red-400 rounded-md p-3 hover:bg-red-400 hover:text-white" onClick={() => handleEliminarClick(it.id)}>
+                  Eliminar
                 </button>
               </td>
             </tr>
