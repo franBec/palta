@@ -110,6 +110,21 @@ const index = () => {
     });
   };
 
+  const errorControl = (res, exitoString, functionName) => {
+    if(!res?.success){
+      setMsjContent(res.errors[0].toString())
+      res.errors.map((error) => {
+        console.log("ERROR - " + functionName + " - " + error)
+      })
+      setisHidden(false)
+      setisError(true)
+    }else{ //control si todo ok
+      setMsjContent(exitoString)
+      setisHidden(false)
+      setisError(false)
+    }
+  }
+
   const savePalta = async () => {
     const res = await fetch("api/palta", {
       method: "POST",
@@ -122,21 +137,9 @@ const index = () => {
     });
 
     const resFromBackend = await res.json();
-    console.log(resFromBackend);
 
     //control si falla
-    if(!resFromBackend?.success){
-      setMsjContent(resFromBackend.errors[0].toString())
-      resFromBackend.errors.map((error) => {
-        console.log("ERROR - savePalta - " + error)
-      })
-      setisHidden(false)
-      setisError(true)
-    }else{ //control si todo ok
-      setMsjContent("Palta creada exitosamente!")
-      setisHidden(false)
-      setisError(false)
-    }
+    errorControl(resFromBackend, "Palta creada con éxito", "savePalta");
 
     setShowModal({ display: false, modo: "lectura" });
     updateCurrentPage(1)
@@ -144,9 +147,6 @@ const index = () => {
   };
 
   const deletePalta = async (id) => {
-
-    console.log(paltaInfo)
-
     const res = await fetch("api/palta", {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
@@ -157,7 +157,10 @@ const index = () => {
     });
 
     const resFromBackend = await res.json();
-    console.log(resFromBackend);
+
+    //control si falla
+    errorControl(resFromBackend, "Palta borrada con éxito", "deletePalta");
+
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
@@ -175,8 +178,10 @@ const index = () => {
     });
 
     const resFromBackend = await res.json();
-    console.log(resFromBackend);
-    //agregar controles si todo salio bien
+
+    //control si falla
+    errorControl(resFromBackend, "Palta editada con éxito", "editPalta");
+
     setShowModal({display: false, modo: "lectura"})
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
