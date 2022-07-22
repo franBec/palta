@@ -8,7 +8,7 @@ const paltaController = async (params) => {
     case "findById":
       return findById(params.id);
     case "findAll":
-      return findAll();
+      return findAll(params);
     case "create":
       return create(params);
     case "deleteById":
@@ -30,14 +30,25 @@ const findById = (id) => {
   };
 };
 
-const findAll = async () => {
+const findAll = async (params) => {
   try {
-    const data = await prisma.Palta.findMany();
+    const page = Number(params.page) || 1
+    const data = await prisma.Palta.findMany({
+      skip: 10 * ( page - 1 ),
+      take: 10
+    });
+
+    const count = await prisma.Palta.count()
 
     return {
       success: true,
       data: data,
       errors: [],
+      metadata: {
+        total: count,
+        page: page,
+        totalPages: Math.ceil(count / 10)
+      }
     };
   } catch (error) {
     return {
