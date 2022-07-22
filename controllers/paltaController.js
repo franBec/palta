@@ -1,19 +1,14 @@
 import prisma from "../db/prisma";
-
+const errorGen =  process.env.ERRORGEN || "Algo salio mal, intente mas tarde"
 const paltaController = async (params) => {
-  console.log(
-    new Date().toUTCString() +
-      " controllers/paltaController.js -> params = " +
-      params
-  );
 
-  console.log("Params.action es: " + params.action);
+  console.log(new Date().toUTCString() + " controllers/paltaController.js -> params = " + JSON.stringify(params));
 
   switch (params.action) {
     case "findById":
       return findById(params.id);
     case "findAll":
-      return findAll();
+      return findAll(params);
     case "create":
       return create(params);
     case "deleteById":
@@ -23,35 +18,56 @@ const paltaController = async (params) => {
     case "login":
       return login(params);
     default:
-      console.log(
-        new Date().toUTCString() +
-          " controllers/paltaController.js -> Action no válido!"
-      );
+      return methodNotFound()
   }
 };
 
 //CRUD Paltas
 const findById = (id) => {
-  console.log(id);
+  console.log(new Date().toUTCString() + " controllers/paltaController.js -> findById  id= " + id);
+
   return {
-    success: true,
+    status: 500,
+    success: false,
     data: [],
-    errors: ["Algo salio muy mal en el servidor, intenta mas tarde"],
+    errors: ["en desarrollo"],
   };
 };
 
-const findAll = async () => {
-  const data = await prisma.Palta.findMany();
-  return {
-    success: true,
-    data: data,
-    errors: [],
-  };
+const findAll = async (params) => {
+  try {
+    const page = Number(params.page) || 1
+    const data = await prisma.Palta.findMany({
+      skip: 10 * ( page - 1 ),
+      take: 10
+    });
+
+    const count = await prisma.Palta.count()
+
+    return {
+      status: data? 200:404,
+      success: true,
+      data: data,
+      errors: [],
+      metadata: {
+        total: count,
+        page: page,
+        totalPages: Math.ceil(count / 10)
+      }
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      data: data,
+      errors: [errorGen, error.toString()],
+    };
+  }
 };
 
 const create = async (params) => {
+  console.log(new Date().toUTCString() + " controllers/paltaController.js -> create  params = " + JSON.stringify(params))
   try {
-    console.log("create: ", params);
     const palta = await prisma.Palta.create({
       data: {
         nombre: params.nombre,
@@ -59,44 +75,46 @@ const create = async (params) => {
       },
     });
     return {
+      status: 200,
       success: true,
       data: palta,
       errors: [],
     };
   } catch (error) {
     return {
+      status: 500,
       success: false,
       data: [],
-      errors: [
-        "Palta - create: Algo salio muy mal en el servidor, intenta mas tarde",
-      ],
+      errors: [errorGen,error.toString()],
     };
   }
 };
 
 const deleteById = async (id) => {
-  console.log("entroo");
+  console.log(new Date().toUTCString() + " controllers/paltaController.js -> deleteById  id = " + id)
 
   try {
     const deletePalta = await prisma.Palta.delete({ where: { id: id } });
 
     return {
+      status:200,
       success: true,
       data: deletePalta,
       errors: [],
     };
   } catch (error) {
     return {
+      status: 500,
       success: false,
       data: [],
-      errors: [error],
+      errors: [errorGen, error.toString()],
     };
   }
 };
 
 const update = async (params) => {
-  console.log("my params ");
-  console.table(params);
+  console.log(new Date().toUTCString() + " controllers/paltaController.js -> update params = " + JSON.stringify(params))
+
   try {
     const response = await prisma.Palta.update({
       where: {
@@ -107,22 +125,22 @@ const update = async (params) => {
         origen: params.origen,
       },
     });
-    console.log("my response ");
-    console.table(response);
-  } catch (error) {
-    console.error(error);
+
     return {
+      status: 200,
+      success: true,
+      data: response,
+      errors: [],
+    };
+
+  } catch (error) {
+    return {
+      status: 500,
       success: false,
       data: [],
-      errors: ["Algo salio muy mal en el servidor, intenta mas tarde", error],
+      errors: [errorGen, error.toString()],
     };
   }
-
-  return {
-    success: true,
-    data: [],
-    errors: [],
-  };
 };
 
 //LOGIN Paltas
@@ -163,5 +181,14 @@ const login = async (params) => {
     };
   }
 };
+
+const methodNotFound = () => (
+  {
+    status: 400,
+    success: false,
+    data: {},
+    errors: [new Date().toUTCString() + ' controllers/paltaController.js ->  method Not Found'],
+  }
+)
 
 export default paltaController;
