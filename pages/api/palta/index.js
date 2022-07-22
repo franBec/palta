@@ -60,7 +60,7 @@ export default async function handler(req, res) {
     case "GET":
       try {
         console.log(new Date().toUTCString() + ' api/palta/index.js -> GET requested! query = '+JSON.stringify(query))
-        if(! query?.action || body?.action !== "findAll"){
+        if(!query?.action || query?.action !== "findAll"){
             log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaControler'
             console.log(log)
             errors.push(log)
