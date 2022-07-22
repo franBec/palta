@@ -36,7 +36,7 @@ const index = () => {
       <div className="flex flex-col">
         <div className="flex justify-start my-2">
           <button
-            className="bg-blue-500 text-white p-2 rounded-lg"
+            className="border-2 border-lime-300 bg-lime-200 hover:bg-lime-400 p-2  rounded-lg"
             onClick={handleClickBotonAgregar}
           >
             Agregar
@@ -48,6 +48,7 @@ const index = () => {
             data={data.data}
             setPaltaInfo={setPaltaInfo}
             setShowModal={setShowModal}
+            deletePalta={deletePalta}
           />
         </div>
       </div>
@@ -92,12 +93,50 @@ const index = () => {
     mutate("api/palta?action=findAll");
   };
 
+  const deletePalta = async (id) => {
+
+    console.log(paltaInfo)
+
+    const res = await fetch("api/palta", {
+      method: "DELETE",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        action: "delete",
+        id: id,
+      }),
+    });
+
+    const resFromBackend = await res.json();
+    console.log(resFromBackend);
+    //agregar controles si todo salio bien
+    mutate("api/palta?action=findAll");
+  }
+
+  const editPalta = async () => {
+    
+    const res = await fetch("api/palta", {
+      method: "PUT",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        action: "update",
+        id: paltaInfo.id,
+        nombre: paltaInfo.nombre,
+        origen: paltaInfo.origen,
+      }),
+    });
+
+    const resFromBackend = await res.json();
+    console.log(resFromBackend);
+    //agregar controles si todo salio bien
+    setShowModal({display: false, modo: "lectura"})
+    mutate("api/palta?action=findAll");
+  }
+
   const renderModal = (modo) => {
     return (
       <Modal
         setShowModal={setShowModal}
         modalTitle="Info de la palta 🥑"
-        savePalta={savePalta}
       >
         <>
           <div>
@@ -122,6 +161,31 @@ const index = () => {
                 onChange={(e) => handleChangeModalInputs(e)}
               />
             </div>
+          </div>
+          <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <button
+              className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              onClick={() =>
+                setShowModal({ display: false, modo: "lectura" })
+              }
+            >
+              Close
+            </button>
+            {showModal.modo === "alta" && (<button
+              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              onClick={() => savePalta()}
+            >
+              Save Changes
+            </button>)}
+            {showModal.modo === "editar" && (<button
+              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              onClick={() => editPalta()}
+            >
+              EDITAR
+            </button>)}
           </div>
         </>
       </Modal>
