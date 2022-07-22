@@ -1,7 +1,7 @@
 import prisma from "../db/prisma";
 const errorGen =  process.env.ERRORGEN || "Algo salio mal, intente mas tarde"
 const paltaController = async (params) => {
-
+  
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> params = " + JSON.stringify(params));
 
   switch (params.action) {
@@ -15,14 +15,11 @@ const paltaController = async (params) => {
       return deleteById(params.id);
     case "update":
       return update(params);
-    case "login":
-      return login(params);
     default:
       return methodNotFound()
   }
 };
 
-//CRUD Paltas
 const findById = (id) => {
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> findById  id= " + id);
 
@@ -139,45 +136,6 @@ const update = async (params) => {
       success: false,
       data: [],
       errors: [errorGen, error.toString()],
-    };
-  }
-};
-
-//LOGIN Paltas
-const login = async (params) => {
-  try {
-    const user = await prisma.User.findUnique({
-      where: {
-        email: params.usuario
-      },
-    });
-    console.log("login - User: ",user)
-    if(user){
-      if(!(user.name === params.password)){
-        return {
-          success: false,
-          data: []
-        };
-      }
-      return {
-        success: true,
-        data: user,
-        errors: [],
-      };
-    }else{
-      return {
-        success: false,
-        data: []
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      data: [],
-      errors: [
-        "Palta - login: Algo salio muy mal en el servidor, intenta mas tarde",
-        error
-      ],
     };
   }
 };

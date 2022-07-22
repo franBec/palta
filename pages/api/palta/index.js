@@ -1,6 +1,6 @@
 import paltaController from "../../../controllers/paltaController";
 
-/*
+/* 
   Todo respuesta de esta api, tiene la siguiente estructura:
   {
     status: number,
@@ -15,7 +15,7 @@ import paltaController from "../../../controllers/paltaController";
 //prettier-ignore
 export default async function handler(req, res) {
   const { method, body, query } = req;
-
+  
   var log = ''
   var errors = [] //un arreglo de strings donde se van a listar los errores
 
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
             log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaController'
             console.log(log)
             errors.push(log)
-
+            
             return res.status(400).json({
               status: 400,
               success: false,
@@ -59,13 +59,12 @@ export default async function handler(req, res) {
     break;
     case "GET":
       try {
-        console.log("ACA GET",method, body, query)
         console.log(new Date().toUTCString() + ' api/palta/index.js -> GET requested! query = '+JSON.stringify(query))
         if(!query?.action || query?.action !== "findAll"){
             log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaControler'
             console.log(log)
             errors.push(log)
-
+            
             return res.status(400).json({
               status: 400,
               success: false,
@@ -101,7 +100,7 @@ export default async function handler(req, res) {
           log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró o no es valido action para llamar en paltaController'
           console.log(log)
           errors.push(log)
-
+          
           return res.status(400).json({
             status: 400,
             success: false,
@@ -109,6 +108,7 @@ export default async function handler(req, res) {
             errors: errors
           })
         }
+
         const resFromController = await paltaController(body)
         console.log(new Date().toUTCString() + " api/palta/index.js -> PUT resFromController = " + JSON.stringify(resFromController))
         if(resFromController.success){
@@ -136,7 +136,7 @@ export default async function handler(req, res) {
           log = new Date().toUTCString() + ' api/palta/index.js -> No se encontró action o no es valido para llamar en paltaControler'
           console.log(log)
           errors.push(log)
-
+          
           return res.status(400).json({
             status: 400,
             success: false,
@@ -164,7 +164,7 @@ export default async function handler(req, res) {
           errors: errors
         });
       }
-      break;
+    break;
     default:
       return res.status(405).json({success: false, data:{}, errors:['Metodo no soportado -Los pibes de runa']});
   }
