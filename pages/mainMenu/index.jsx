@@ -4,9 +4,21 @@ import { useState } from "react";
 import Modal from "../../components/utils/modal";
 import { GiAvocado } from "react-icons/gi";
 import ShowMsj from "../../components/layout/showMsj/showMsj";
+import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
 
 const index = () => {
   //*contenido principal
+  //pagination
+  const [currentPage, updateCurrentPage] = useState(1);
+  const shouldUpdatePageNumber = (number) => {
+    if (
+      number > 0 &&
+      number <= data?.metadata?.totalPages &&
+      number != currentPage
+    ) {
+      updateCurrentPage(number);
+    }
+  };
 
   const fetchPaltas = async (url) => {
     const res = await fetch(url);
@@ -15,7 +27,7 @@ const index = () => {
   };
 
   const { data, error, mutate } = useSWR(
-    "api/palta?action=findAll",
+    `api/palta?action=findAll&page=${currentPage}`,
     fetchPaltas
   );
 
@@ -59,8 +71,19 @@ const index = () => {
             setShowModal={setShowModal}
             deletePalta={deletePalta}
           />
+          <div className="mt-2">
+            <PaginateNavbar
+              currentPage={data?.metadata?.page}
+              totalPages={data?.metadata?.totalPages}
+              handleClick={shouldUpdatePageNumber}
+            />
+          </div>
         </div>
-        <ShowMsj isHidden={isHidden} setisHidden={setisHidden} isError={isError}>
+        <ShowMsj
+          isHidden={isHidden}
+          setisHidden={setisHidden}
+          isError={isError}
+        >
           {msjContent}
         </ShowMsj>
       </div>
@@ -116,7 +139,8 @@ const index = () => {
     }
 
     setShowModal({ display: false, modo: "lectura" });
-    mutate("api/palta?action=findAll");
+    updateCurrentPage(1)
+    mutate(`api/palta?action=findAll&page=${currentPage}`);
   };
 
   const deletePalta = async (id) => {
@@ -127,19 +151,18 @@ const index = () => {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        action: "delete",
+        action: "deleteById",
         id: id,
       }),
     });
 
     const resFromBackend = await res.json();
     console.log(resFromBackend);
-    //agregar controles si todo salio bien
-    mutate("api/palta?action=findAll");
+    updateCurrentPage(1)
+    mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
 
   const editPalta = async () => {
-    
     const res = await fetch("api/palta", {
       method: "PUT",
       headers: { "Content-type": "application/json" },
@@ -155,7 +178,8 @@ const index = () => {
     console.log(resFromBackend);
     //agregar controles si todo salio bien
     setShowModal({display: false, modo: "lectura"})
-    mutate("api/palta?action=findAll");
+    updateCurrentPage(1)
+    mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
 
   const renderModal = (modo) => {
