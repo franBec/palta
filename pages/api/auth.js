@@ -1,5 +1,5 @@
 import { withSessionRoute } from "../../lib/session";
-import paltaController from "../../controllers/paltaController";
+import userController from "../../controllers/userController";
 
 const ERROR_CREDENTIALS = "Usuario y/o contraseña incorrecta";
 
@@ -26,7 +26,7 @@ async function loginRoute(req, res) {
         }
 
         const params = body
-        const resFromController = await paltaController(params)
+        const resFromController = await userController(params)
         console.log("Login: ",resFromController)
         if(resFromController.success){
             req.session.user = resFromController;

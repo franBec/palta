@@ -3,7 +3,7 @@ const errorGen =  process.env.ERRORGEN || "Algo salio mal, intente mas tarde"
 const userController = async (params) => {
   
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> params = " + JSON.stringify(params));
-
+  console.log(params)
   switch (params.action) {
     case "login":
       return login(params);
