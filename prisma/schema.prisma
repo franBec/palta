@@ -7,34 +7,67 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
+// model Post {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String   @db.VarChar(255)
+//   content   String?
+//   published Boolean  @default(false)
+//   author    User     @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  firstName   String?
+  LastName    String?
+  //posts   Post[]
+  //profile Profile?
 }
 
 model Palta {
   id     Int    @id @default(autoincrement())
   nombre String
   origen String
+}
+
+model sec_usuario{
+  id              Int         @id @default(autoincrement())
+  lastUpdate      DateTime    @updatedAt
+  created         DateTime    @default(now())
+  estado          Int         @default(1)
+  email           String      @unique
+  firstName       String?     @db.VarChar(100)
+  lastName        String?     @db.VarChar(100)
+  fechaNacimiento DateTime?
+  dni             Int?
+  adress          String?     @db.VarChar(255)
+  userName        String?     @db.VarChar(100)
+  telefono        String?
+  roles           sec_roles[]
+}
+
+model sec_roles{
+  id              Int           @id @default(autoincrement())
+  lastUpdate      DateTime      @updatedAt
+  created         DateTime      @default(now())
+  estado          Int           @default(1)
+  nombre          String?       @db.VarChar(255)
+  description     String?       @db.VarChar(255)
+  usuario         sec_usuario[]
+  usuarioId       Int
+  roles           sec_permisos[] 
+}
+
+model sec_permisos{
+  id              Int         @id @default(autoincrement())
+  lastUpdate      DateTime    @updatedAt
+  created         DateTime    @default(now())
+  estado          Int         @default(1)
+  nombre          String?     @db.VarChar(255)
+  description     String?     @db.VarChar(255)
+  rol             sec_roles[]
+  rolId           Int
 }
