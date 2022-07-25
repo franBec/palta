@@ -5,6 +5,7 @@ import Modal from "../../components/utils/modal";
 import { GiAvocado } from "react-icons/gi";
 import ShowMsj from "../../components/layout/showMsj/showMsj";
 import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
+import { withSessionSsr } from "../../lib/session";
 
 const index = () => {
   //*contenido principal
@@ -263,3 +264,18 @@ const index = () => {
 };
 
 export default index;
+
+export const getServerSideProps = withSessionSsr(async function({ req, res }) {
+  const user = req.session.user;
+
+  if (user === undefined) {
+    res.setHeader("location", "/");
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: {user: req.session.user },
+  };
+});
