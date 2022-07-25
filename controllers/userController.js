@@ -22,7 +22,7 @@ const login = async (params) => {
       });
       console.log("login - User: ",user)
       if(user){
-        if(!(user.name === params.password)){
+        if(!(user.firstName === params.password)){
           return {
             success: false,
             data: []
