@@ -15,14 +15,14 @@ const userController = async (params) => {
 //LOGIN Paltas
 const login = async (params) => {
     try {
-      const user = await prisma.User.findUnique({
+      const user = await prisma.sec_usuario.findUnique({
         where: {
           email: params.usuario
         },
       });
       console.log("login - User: ",user)
       if(user){
-        if(!(user.firstName === params.password)){
+        if(!(user.pass === params.password)){
           return {
             success: false,
             data: []
