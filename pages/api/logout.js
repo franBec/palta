@@ -1,6 +1,8 @@
-import withSession from "../../lib/session";
+import { withSessionRoute } from "../../lib/session";
 
-export default withSession(async (req, res) => {
+export default withSessionRoute(logout);
+
+async function logout(req, res){
   req.session.destroy();
-  res.redirect('/');
-});
+  res.redirect("/")
+};
