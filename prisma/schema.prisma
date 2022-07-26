@@ -58,6 +58,7 @@ model sec_usuario{
   userName        String?     @db.VarChar(100)
   telefono        String?
   roles           sec_rol[]   @relation("sec_usuario_roles") 
+  pass            String      @db.VarChar(100)
 }
 
 model sec_rol{
