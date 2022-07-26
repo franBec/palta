@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from 'next/router'
 import Footer from "./footer/footer.jsx"
+import Link from "next/link.js";
 //import Router from "next/router";
 
 const Layout = ({ children }) => {
@@ -13,11 +14,11 @@ const Layout = ({ children }) => {
           </div>
           <div>
             <li className="text-white">
-              <a href="/api/logout">
+              <Link href="/api/logout">
                 <button className="my-3 bg-red-500 border border-red-800 p-2">
                   Log out
                 </button>
-              </a>
+              </Link>
             </li>
           </div>
         </ul>
