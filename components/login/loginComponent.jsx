@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image';
 
 const LoginComponent = ({useHandleChangeLoginInputs, useLogin}) => {
+
     return (
         <>
           <div className="drop-shadow-xl rounded-lg bg-gradient-to-r from-white to-lime-500 flex justify-center items-center p-10">

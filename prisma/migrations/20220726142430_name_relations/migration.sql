@@ -32,6 +32,7 @@ CREATE TABLE `sec_usuario` (
     `adress` VARCHAR(255) NULL,
     `userName` VARCHAR(100) NULL,
     `telefono` VARCHAR(191) NULL,
+    `pass` VARCHAR(100) NULL,
 
     UNIQUE INDEX `sec_usuario_email_key`(`email`),
     PRIMARY KEY (`id`)

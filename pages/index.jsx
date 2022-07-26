@@ -3,8 +3,11 @@ import { GiAvocado } from "react-icons/gi";
 import useSWR from "swr";
 import Router from "next/router";
 import LoginComponent from "../components/login/loginComponent"
+import { useUsername } from '../zustand/SessionStore';
 
 const Login = () => {
+  const setUsername = useUsername((state) => state.set_username)
+
   const [paltaLogin, setPaltaLogin] = useState({
     usuario: "",
     password: ""
@@ -45,6 +48,7 @@ const Login = () => {
       if(!resFromBackend.success){
         console.log(resFromBackend);
       }else{
+        setUsername(`Palta login usuario`)
         //Muto el usuario así me re-renderiza el componente
         mutate(resFromBackend)
       }
