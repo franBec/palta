@@ -19,10 +19,17 @@ const login = async (params) => {
         where: {
           email: params.usuario
         },
+        include: {
+          roles:{include: {
+            permisos: true,
+          }}
+        },
       });
       console.log("login - User: ",user)
       if(user){
         if(!(user.pass === params.password)){
+
+          
           return {
             success: false,
             data: []

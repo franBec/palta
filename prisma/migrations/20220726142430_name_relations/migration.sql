@@ -64,30 +64,30 @@ CREATE TABLE `sec_permiso` (
 
 -- CreateTable
 CREATE TABLE `_sec_usuario_roles` (
-    `rol_id` INTEGER NOT NULL,
     `usuario_id` INTEGER NOT NULL,
+    `rol_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `_sec_usuario_roles_AB_unique`(`rol_id`, `usuario_id`),
-    INDEX `_sec_usuario_roles_B_index`(`usuario_id`)
+    UNIQUE INDEX `_sec_usuario_roles_usuario_id_rol_id_unique`(`usuario_id`, `rol_id`),
+    PRIMARY KEY (`usuario_id`,`rol_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `_sec_rol_permisos` (
-    `permiso_id` INTEGER NOT NULL,
     `rol_id` INTEGER NOT NULL,
+    `permiso_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `_sec_rol_permisos_AB_unique`(`permiso_id`, `rol_id`),
-    INDEX `_sec_rol_permisos_B_index`(`rol_id`)
+    UNIQUE INDEX `_sec_rol_permisos_rol_id_permiso_id_unique`(`rol_id`, `permiso_id`),
+    PRIMARY KEY (`rol_id`,`permiso_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `_sec_usuario_roles` ADD CONSTRAINT `_sec_usuario_roles_A_fkey` FOREIGN KEY (`rol_id`) REFERENCES `sec_rol`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_sec_usuario_roles` ADD CONSTRAINT `_sec_usuario_roles_rol_id_fkey` FOREIGN KEY (`rol_id`) REFERENCES `sec_rol`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_sec_usuario_roles` ADD CONSTRAINT `_sec_usuario_roles_B_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `sec_usuario`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_sec_usuario_roles` ADD CONSTRAINT `_sec_usuario_roles_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `sec_usuario`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_sec_rol_permisos` ADD CONSTRAINT `_sec_rol_permisos_A_fkey` FOREIGN KEY (`permiso_id`) REFERENCES `sec_permiso`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_sec_rol_permisos` ADD CONSTRAINT `_sec_rol_permisos_permiso_id_fkey` FOREIGN KEY (`permiso_id`) REFERENCES `sec_permiso`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_sec_rol_permisos` ADD CONSTRAINT `_sec_rol_permisos_B_fkey` FOREIGN KEY (`rol_id`) REFERENCES `sec_rol`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_sec_rol_permisos` ADD CONSTRAINT `_sec_rol_permisos_rol_id_fkey` FOREIGN KEY (`rol_id`) REFERENCES `sec_rol`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
