@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiAvocado } from "react-icons/gi";
 import useSWR from "swr";
 import Router from "next/router";
 import LoginComponent from "../components/login/loginComponent"
+import { useCurrentUser } from '../zustand/SessionStore';
 
 const Login = () => {
+  const setUser = useCurrentUser((state) => state.set_CurrentUser)
+  const setPermisos = useCurrentUser((state) => state.set_permisosCurrentUser)
+  const [stateUser, setStateUser] = useState()
+  const [statePermisos, setStatePermisos] = useState()
+
+  useEffect(() => {
+    setStateUser(setUser)
+    setStatePermisos(setPermisos)
+  },[setUser,setPermisos])
+
   const [paltaLogin, setPaltaLogin] = useState({
     usuario: "",
     password: ""
@@ -45,6 +56,8 @@ const Login = () => {
       if(!resFromBackend.success){
         console.log(resFromBackend);
       }else{
+        setUser(resFromBackend.data)
+        setPermisos(resFromBackend.permisos)
         //Muto el usuario así me re-renderiza el componente
         mutate(resFromBackend)
       }

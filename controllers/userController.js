@@ -15,9 +15,15 @@ const userController = async (params) => {
 //LOGIN Paltas
 const login = async (params) => {
     try {
+      var permisosList = []
       const user = await prisma.sec_usuario.findUnique({
         where: {
           email: params.usuario
+        },
+        include: {
+          roles:{include: {
+            permisos: true,
+          }}
         },
       });
       console.log("login - User: ",user)
@@ -28,9 +34,19 @@ const login = async (params) => {
             data: []
           };
         }
+        if(user?.roles){
+          user?.roles.forEach(it => {
+            if(it?.permisos){
+              it?.permisos.forEach(pms => {
+                permisosList.push(pms)
+              })
+            }
+          });
+        }
         return {
           success: true,
           data: user,
+          permisos: permisosList,
           errors: [],
         };
       }else{

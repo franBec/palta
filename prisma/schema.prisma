@@ -33,16 +33,7 @@ model Palta {
   origen String
 }
 
-// ATENCIÓN:
-// Para las relaciones de muchos a muchos implicitas (como en el caso de los modelos de abajo), 
-// se migra todo x 1era vez (npx prisma migrate dev --name nombre),
-// luego de esto se modifica el archivo de migración creado anteriormente, cambiando 
-// nombres de los atributos al que nosotros queremos..
-// Luego se realiza otra segunda migracion (npx prisma migrate dev),
-// durante la migración, se ejecutara los archivos de migracion creados anteriormente
-// (se ejecuta el modificado), y la consola te preguntará durante la migración, si quieres crear
-// un nuevo archivo de migración, usted pondrá que no quiere, y entonces solo se migraran los archivos 
-// de migración con las modificaciones deseadas.
+//Usuario - Roles - Permisos
 
 model sec_usuario{
   id              Int         @id @default(autoincrement())
@@ -69,7 +60,7 @@ model sec_rol{
   nombre          String?       @db.VarChar(255)
   description     String?       @db.VarChar(255)
   usuario         sec_usuario[] @relation("sec_usuario_roles") 
-  roles           sec_permiso[] @relation("sec_rol_permisos") 
+  permisos        sec_permiso[] @relation("sec_rol_permisos") 
 }
 
 model sec_permiso{
@@ -79,5 +70,5 @@ model sec_permiso{
   estado          Int         @default(1)
   nombre          String?     @db.VarChar(255)
   description     String?     @db.VarChar(255)
-  rol             sec_rol[]   @relation("sec_rol_permisos") 
+  roles           sec_rol[]   @relation("sec_rol_permisos") 
 }
