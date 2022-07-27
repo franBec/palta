@@ -276,7 +276,7 @@ const Index = () => {
   );
 };
 
-export default index;
+export default Index;
 
 export const getServerSideProps = withSessionSsr(async function({ req, res }) {
   const user = req.session.user;
