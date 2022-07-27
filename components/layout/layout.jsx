@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Footer from "./footer/footer.jsx"
-import Link from "next/link.js";
+import Link from "next/link";
 import Router from "next/router";
 import { useCurrentUser } from '../../zustand/SessionStore';
 //import Router from "next/router";
@@ -45,14 +45,14 @@ const Layout = ({ children }) => {
           </div>
           <div>
               <li className="text-white">
-                {/* <Link href="/api/logout">
-                  <button className="my-3 bg-red-500 border border-red-800 p-2">
+                <Link href="/api/logout">
+                  <button className="my-3 bg-red-500 border border-red-800 p-2" onClick={handleLogout}>
                     Log out
                   </button>
-                </Link> */}
-                <button className="my-3 bg-red-500 border border-red-800 p-2" onClick={handleLogout}>
+                </Link>
+                {/* <button className="my-3 bg-red-500 border border-red-800 p-2" onClick={handleLogout}>
                     Log out
-                </button>
+                </button> */}
               </li>
           </div>
           
