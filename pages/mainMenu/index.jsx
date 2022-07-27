@@ -8,7 +8,7 @@ import { withSessionSsr } from "../../lib/session";
 import { useEffect, useState } from "react";
 import { useCurrentUser } from '../../zustand/SessionStore';
 
-const index = () => {
+const Index = () => {
 
   const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
   const [statePermisos, setStatePermisos] = useState()

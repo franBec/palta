@@ -16,11 +16,6 @@ const Login = () => {
     setStatePermisos(setPermisos)
   },[setUser,setPermisos])
 
-  const [paltaLogin, setPaltaLogin] = useState({
-    usuario: "",
-    password: ""
-  });
-
   const fetchLogin = async (url) => {
     const res = await fetch(url);
     const resjson = await res.json();
@@ -32,24 +27,15 @@ const Login = () => {
     fetchLogin
   );
 
-  const handleChangeLoginInputs = (e) => {
-    const { name, value } = e.target;
-
-    setPaltaLogin({
-      ...paltaLogin,
-      [name]: value,
-    });
-  };
-
-  const login = async () => {
+  const login = async ({usuario,password}) => {
     try {
       const res = await fetch("api/auth", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
           action: "login",
-          usuario: paltaLogin.usuario,
-          password: paltaLogin.password,
+          usuario: usuario,
+          password: password,
         }),
       });
       const resFromBackend = await res.json();
@@ -59,7 +45,7 @@ const Login = () => {
         setUser(resFromBackend.data)
         setPermisos(resFromBackend.permisos)
         //Muto el usuario así me re-renderiza el componente
-        mutate(resFromBackend)
+        mutate("/api/user/user")
       }
     } catch (error) {
       console.log(error);
@@ -69,10 +55,11 @@ const Login = () => {
   const renderMainContent = () => {
     if (!data) {
       return (
-        <div>
-          loading...
-          <GiAvocado />
-        </div>
+        <div role="status">
+          <svg aria-hidden="true" className="flex justify-center text-lime-500 items-center mr-2 w-8 h-8 animate-spin " viewBox="0 0 50 50" style={{width: "150px", height: "150px"}}>
+            <GiAvocado />
+          </svg>
+      </div>
       );
     }
     
@@ -83,7 +70,7 @@ const Login = () => {
     if(data?.isLoggedIn){
       Router.push("/mainMenu")
     }else{
-      return <LoginComponent useHandleChangeLoginInputs={handleChangeLoginInputs} useLogin={login}/>
+      return <LoginComponent handleLogin={login}/>
     }
   };
 
