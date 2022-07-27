@@ -1,12 +1,15 @@
-import React from 'react'
 import Image from 'next/image';
 import { useState } from "react";
 
-const LoginComponent = ({useLogin}) => {
+const LoginComponent = ({handleLogin}) => {
     const [paltaLogin, setPaltaLogin] = useState({
       usuario: "",
       password: ""
     });
+
+    const handleIniciarSesion = () =>{
+      handleLogin(paltaLogin)
+    }
 
     const handleChangeLoginInputs = (e) => {
       const { name, value } = e.target;
@@ -44,7 +47,7 @@ const LoginComponent = ({useLogin}) => {
                 onChange={(e) => handleChangeLoginInputs(e)}
               />
               <button className="mt-5 bg-lime-500 border border-gray-500 p-2"
-               onClick={() => useLogin(paltaLogin)}>
+               onClick={handleIniciarSesion}>
                 {/* <Link href="/mainMenu">Iniciar sesion</Link> */}
                 Iniciar sesion
               </button>

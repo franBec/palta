@@ -45,7 +45,7 @@ const Login = () => {
         setUser(resFromBackend.data)
         setPermisos(resFromBackend.permisos)
         //Muto el usuario así me re-renderiza el componente
-        mutate(resFromBackend)
+        mutate("/api/user/user")
       }
     } catch (error) {
       console.log(error);
@@ -70,7 +70,7 @@ const Login = () => {
     if(data?.isLoggedIn){
       Router.push("/mainMenu")
     }else{
-      return <LoginComponent useLogin={login}/>
+      return <LoginComponent handleLogin={login}/>
     }
   };
 

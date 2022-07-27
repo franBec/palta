@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Footer from "./footer/footer.jsx"
 import Link from "next/link.js";
+import Router from "next/router";
 import { useCurrentUser } from '../../zustand/SessionStore';
 //import Router from "next/router";
 
@@ -26,6 +27,7 @@ const Layout = ({ children }) => {
     }finally{
       setUser(null)
       setPermisos(null)
+      Router.push("/")
     }
   }
 
