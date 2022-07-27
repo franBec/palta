@@ -48,13 +48,7 @@ const Layout = ({ children }) => {
                 </button>
               </li>
           </div>
-          <>
-          {statePermisos.map((it) => (
-            <div key={it.id}>
-              <h1>{it?.nombre}</h1>
-            </div>
-          ))}
-          </>
+          
         </>
       )
     }

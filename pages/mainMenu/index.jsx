@@ -1,13 +1,23 @@
 import Tabla from "../../components/mainMenu/tabla";
 import useSWR from "swr";
-import { useState } from "react";
 import Modal from "../../components/utils/modal";
 import { GiAvocado } from "react-icons/gi";
 import ShowMsj from "../../components/layout/showMsj/showMsj";
 import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
 import { withSessionSsr } from "../../lib/session";
+import { useEffect, useState } from "react";
+import { useCurrentUser } from '../../zustand/SessionStore';
 
 const index = () => {
+
+  const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
+  const [statePermisos, setStatePermisos] = useState()
+
+  useEffect(() => {
+    setStatePermisos(getPermisos)
+  },[getPermisos])
+
+
   //*contenido principal
   //pagination
   const [currentPage, updateCurrentPage] = useState(1);
@@ -57,6 +67,8 @@ const index = () => {
     return (
       <div className="flex flex-col">
         <div className="flex justify-start my-2">
+
+        { statePermisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
           <button
             className="border-2 border-lime-300 bg-lime-200 hover:bg-lime-400 p-2  rounded-lg"
             onClick={handleClickBotonAgregar}
@@ -64,6 +76,7 @@ const index = () => {
             Agregar
             <GiAvocado className="ml-2 text-3xl text-white inline" />
           </button>
+        }
         </div>
         <div>
           <Tabla
