@@ -15,6 +15,7 @@ const userController = async (params) => {
 //LOGIN Paltas
 const login = async (params) => {
     try {
+      var permisosList = []
       const user = await prisma.sec_usuario.findUnique({
         where: {
           email: params.usuario
@@ -28,16 +29,24 @@ const login = async (params) => {
       console.log("login - User: ",user)
       if(user){
         if(!(user.pass === params.password)){
-
-          
           return {
             success: false,
             data: []
           };
         }
+        if(user?.roles){
+          user?.roles.forEach(it => {
+            if(it?.permisos){
+              it?.permisos.forEach(pms => {
+                permisosList.push(pms)
+              })
+            }
+          });
+        }
         return {
           success: true,
           data: user,
+          permisos: permisosList,
           errors: [],
         };
       }else{

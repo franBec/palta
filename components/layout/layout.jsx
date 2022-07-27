@@ -1,5 +1,4 @@
-import React from "react";
-import { useRouter } from 'next/router'
+import { useEffect, useState } from "react";
 import Footer from "./footer/footer.jsx"
 import Link from "next/link.js";
 import { useCurrentUser } from '../../zustand/SessionStore';
@@ -7,14 +6,22 @@ import { useCurrentUser } from '../../zustand/SessionStore';
 
 const Layout = ({ children }) => {
   const getUser = useCurrentUser((state) => state.get_CurrentUser)
-  const getRoles = useCurrentUser((state) => state.get_rolsCurrentUser)
+  const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
+  const [stateUser, setStateUser] = useState()
+  const [statePermisos, setStatePermisos] = useState()
+
+  useEffect(() => {
+    setStateUser(getUser)
+    setStatePermisos(getPermisos)
+  },[getUser,getPermisos])
+
 
   const logout = () =>{
-    if(getUser){
+    if(stateUser){
       return(
         <>
           <div>
-              <li className="text-white"><h1>Bienvenido {getUser?.lastName+" "}{getUser?.userName}</h1></li>
+              <li className="text-white"><h1>Bienvenido {stateUser?.lastName+" "}{stateUser?.userName}</h1></li>
           </div>
           <div>
               <li className="text-white">
@@ -25,16 +32,13 @@ const Layout = ({ children }) => {
                 </Link>
               </li>
           </div>
-          {getRoles?.map((it) => (
+          <>
+          {statePermisos.map((it) => (
             <div key={it.id}>
-              <li className="text-white">
-                <h1>{it?.nombre+" "+it.description}</h1>
-              </li>
-              {it?.permisos.map((ti) => (
-                <p>{ti?.nombre}</p>
-              ))}
+              <h1>{it?.nombre}</h1>
             </div>
           ))}
+          </>
         </>
       )
     }
