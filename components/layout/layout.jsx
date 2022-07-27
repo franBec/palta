@@ -18,17 +18,22 @@ const Layout = ({ children }) => {
     setStatePermisos(getPermisos)
   },[getUser,getPermisos])
 
+  // const handleLogout = async () => {
+  //   try {
+  //     const res = await fetch("api/logout");
+  //     const resFromBackend = await res.json();
+  //   } catch (error) {
+  //     console.log(error)
+  //   }finally{
+  //     setUser(null)
+  //     setPermisos(null)
+  //     Router.push("/")
+  //   }
+  // }
+
   const handleLogout = async () => {
-    try {
-      const res = await fetch("api/logout");
-      const resFromBackend = await res.json();
-    } catch (error) {
-      console.log(error)
-    }finally{
-      setUser(null)
-      setPermisos(null)
-      Router.push("/")
-    }
+    setUser(null)
+    setPermisos(null)
   }
 
   const logout = () =>{
