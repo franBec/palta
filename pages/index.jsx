@@ -3,6 +3,7 @@ import useSWR from "swr";
 import Router from "next/router";
 import LoginComponent from "../components/login/loginComponent"
 import { useCurrentUser } from '../zustand/SessionStore';
+import ErrorComponent from "../components/utils/errorComponent";
 
 const Login = () => {
 
@@ -76,7 +77,7 @@ const Login = () => {
     
     //algo salió mal
     if (error) {
-      return <div>failed to load</div>;
+      return <ErrorComponent message={'Algo malió sal'}/>;
     }
 
     //verificamos si debemos quedarnos en el log in o movernos a main menu

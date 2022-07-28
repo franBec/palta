@@ -109,6 +109,8 @@ const Index = () => {
 
   //*Alta
   const savePalta = async (form) => {
+    setShowModal({ display: false, modo: "lectura" });
+
     const res = await fetch("api/palta", {
       method: "POST",
       headers: { "Content-type": "application/json" },
@@ -119,7 +121,6 @@ const Index = () => {
       }),    
     });
     
-    setShowModal({ display: false, modo: "lectura" });
 
     const resFromBackend = await res.json();
     callSwal(resFromBackend.success, resFromBackend.success ? 'Palta agregada exitosamente':'Algo salió mal...')
@@ -137,15 +138,17 @@ const Index = () => {
         id: id,
       }),
     });
-
-    const resFromBackend = await res.json();
+    
     callSwal(resFromBackend.success, resFromBackend.success ? 'Palta eliminada exitosamente':'Algo salió mal...')
+    const resFromBackend = await res.json();
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
 
   //*Modificar
   const editPalta = async (form) => {
+    setShowModal({display: false, modo: "lectura"})
+
     const res = await fetch("api/palta", {
       method: "PUT",
       headers: { "Content-type": "application/json" },
@@ -157,10 +160,9 @@ const Index = () => {
       }),
     });
 
-    setShowModal({display: false, modo: "lectura"})
 
-    const resFromBackend = await res.json();
     callSwal(resFromBackend.success, resFromBackend.success ? 'Palta editada exitosamente':'Algo salió mal...')
+    const resFromBackend = await res.json();
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
