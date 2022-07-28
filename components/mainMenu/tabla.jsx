@@ -1,29 +1,18 @@
 import { useEffect, useState } from "react";
 import { useCurrentUser } from '../../zustand/SessionStore';
 
-const Tabla = ({ data, setPaltaInfo, setShowModal, deletePalta }) => {
+import TablaRow from "./tablaRow";
 
+const Tabla = ({ data, actions }) => {
+
+  //*obtengo permisos de la sessionStore de zustand
   const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
-  const [statePermisos, setStatePermisos] = useState()
 
+  //*proxy de los permisos
+  const [statePermisos, setStatePermisos] = useState()
   useEffect(() => {
     setStatePermisos(getPermisos)
   },[getPermisos])
-
-
-  const handleVerMasClick = (i) => {
-    setPaltaInfo(data[i]);
-    setShowModal({ display: true, modo: "lectura" });
-  };
-
-  const handleEliminarClick = (i) => {
-    deletePalta(i)
-  };
-  
-  const handleEditarClick = (i) => {
-    setPaltaInfo(data[i]);
-    setShowModal({ display: true, modo: "editar" });
-  }
 
   const renderTable = () => {
     return (
@@ -57,38 +46,8 @@ const Tabla = ({ data, setPaltaInfo, setShowModal, deletePalta }) => {
          </tr>
        </thead>
        <tbody>
-         {data?.map((it, i) => (
-           <tr key={i} className="border-b bg-green-100 border-green-200">
-             <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">
-               {it.id ?? "-"}
-             </td>
-             <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">
-               {it.nombre ?? "-"}
-             </td>
-             <td className="text-sm text-gray-900 font-medium  py-4 whitespace-nowrap">
-               {it.origen ?? "-"}
-             </td>
-             <td>
-               <button
-                 onClick={() => handleVerMasClick(i)}
-                 className="border-2 border-blue-300 hover:bg-blue-500 hover:text-white p-3 rounded-md"
-               >
-                 Detalles
-               </button>
-               { statePermisos?.some(it => it.nombre === "PALTA_EDIT_BUTTON") &&
-                 <button className="border-2 ml-2 border-yellow-300 hover:bg-yellow-500 hover:text-white px-5 py-3 rounded-md" onClick={() => handleEditarClick(i)}>
-                   Editar
-                 </button>
-
-               } 
-
-              { statePermisos?.some(it => it.nombre === "PALTA_DELETE_BUTTON") &&
-               <button className="ml-2 border-2 border-red-400 rounded-md p-3 hover:bg-red-400 hover:text-white" onClick={() => handleEliminarClick(it.id)}>
-                 Eliminar
-               </button>
-              }
-             </td>
-           </tr>
+         {data?.map((it) => (
+           <TablaRow key={it.id} palta={it} permisos={statePermisos} actions={actions}/>
          ))}
        </tbody>
      </table>

@@ -74,7 +74,7 @@ const Login = () => {
       );
     }
     
-    //algo salio mal
+    //algo salió mal
     if (error) {
       return <div>failed to load</div>;
     }
