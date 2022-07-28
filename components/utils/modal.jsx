@@ -21,9 +21,9 @@ const Modal = ({ setShowModal, modalTitle, children }) => {
                 </span>
               </button>
             </div>
+            
             {/*body*/}
             <div className="relative p-6 flex-auto">{children}</div>
-            {/*footer*/}
             
           </div>
         </div>

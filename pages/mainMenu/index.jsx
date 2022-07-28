@@ -1,26 +1,34 @@
-import Tabla from "../../components/mainMenu/tabla";
 import useSWR from "swr";
-import Modal from "../../components/utils/modal";
-import { GiAvocado } from "react-icons/gi";
-import ShowMsj from "../../components/layout/showMsj/showMsj";
-import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
-import { withSessionSsr } from "../../lib/session";
+import swal from "sweetalert"
 import { useEffect, useState } from "react";
+import { GiAvocado } from "react-icons/gi";
+import { withSessionSsr } from "../../lib/session";
+
 import { useCurrentUser } from '../../zustand/SessionStore';
+import {useLoadingBlockingAnimation} from '../../zustand/LoadingStore'
+
+import Tabla from "../../components/mainMenu/tabla";
+import Modal from "../../components/utils/modal";
+import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
 import ModalChildren from "../../components/mainMenu/modalChildren";
 
-import swal from "sweetalert"
-;
 const Index = () => {
 
-  //*permisos obtenidos en tiempo de login. Se encuentran en una store de zustand
+  //* ----- zustand stuff -----
+
+  //permisos obtenidos en tiempo de login. Se encuentran en una store de zustand
   const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
   
-  //*proxy de los permisos, necesario para evitar rehydration error
+  //proxy de los permisos, necesario para evitar rehydration error
   const [statePermisos, setStatePermisos] = useState()
   useEffect(() => {
     setStatePermisos(getPermisos)
   },[getPermisos])
+
+  //getter y setter de la animacion bloqueante
+  const setIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.set_isLoading)
+
+  //* --------------------------
 
   //*pagination
   const [currentPage, updateCurrentPage] = useState(1);
@@ -55,18 +63,12 @@ const Index = () => {
   //* swal stuff
   const callSwal = (success, text) => {
     //cartel de éxito
-    if(success){
-      swal(text, {
-        icon: "success",
-      });
-    }
 
-    //cartel de error
-    else{      
-      swal(text, {
-        icon: "error",
-      });
-    }
+    swal(text, {
+      icon: success? 'success':'error',
+      button: false,
+      timer: 3000
+    });
   }  
 
   //* ----- ABM de palta - HANDLE CLICK EN BOTONES ------
@@ -109,6 +111,9 @@ const Index = () => {
 
   //*Alta
   const savePalta = async (form) => {
+    
+    setIsLoadingBloqueante(true)
+
     setShowModal({ display: false, modo: "lectura" });
 
     const res = await fetch("api/palta", {
@@ -123,6 +128,9 @@ const Index = () => {
     
 
     const resFromBackend = await res.json();
+    
+    setIsLoadingBloqueante(false)
+    
     callSwal(resFromBackend.success, resFromBackend.success ? 'Palta agregada exitosamente':'Algo salió mal...')
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
@@ -130,6 +138,9 @@ const Index = () => {
 
   //*Baja
   const deletePalta = async (id) => {
+
+    setIsLoadingBloqueante(true)
+
     const res = await fetch("api/palta", {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
@@ -139,8 +150,11 @@ const Index = () => {
       }),
     });
     
-    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta eliminada exitosamente':'Algo salió mal...')
     const resFromBackend = await res.json();
+
+    setIsLoadingBloqueante(false)
+
+    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta eliminada exitosamente':'Algo salió mal...')
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
@@ -148,6 +162,8 @@ const Index = () => {
   //*Modificar
   const editPalta = async (form) => {
     setShowModal({display: false, modo: "lectura"})
+
+    setIsLoadingBloqueante(true)
 
     const res = await fetch("api/palta", {
       method: "PUT",
@@ -161,8 +177,11 @@ const Index = () => {
     });
 
 
-    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta editada exitosamente':'Algo salió mal...')
     const resFromBackend = await res.json();
+
+    setIsLoadingBloqueante(false)
+
+    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta editada exitosamente':'Algo salió mal...')
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }

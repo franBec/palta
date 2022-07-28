@@ -7,6 +7,10 @@ import { AiOutlinePoweroff } from "react-icons/ai";
 import Image from 'next/image';
 //import Router from "next/router";
 
+
+import {useLoadingBlockingAnimation} from '../../zustand/LoadingStore'
+import LoadingBloqueante from "../utils/loadingBloqueante.jsx";
+
 const Layout = ({ children }) => {
   const getUser = useCurrentUser((state) => state.get_CurrentUser)
   const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
@@ -14,6 +18,8 @@ const Layout = ({ children }) => {
   const setPermisos = useCurrentUser((state) => state.set_permisosCurrentUser)
   const [stateUser, setStateUser] = useState()
   const [statePermisos, setStatePermisos] = useState()
+
+  const getIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.get_isLoading)
 
   useEffect(() => {
     setStateUser(getUser)
@@ -73,17 +79,21 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div className="flex flex-col h-full justify-between">
-      <header className="bg-lime-500 h-16">
-        <ul className="flex flex-row justify-around h-full items-center">
-          {logout()}
-        </ul>
-      </header>
-      <main className="p-2 lg:h-screen md:h-max flex justify-center items-center">{children}</main>
-      <div>
-        <Footer />
+    <>
+      <div className="flex flex-col h-full justify-between">
+        <header className="bg-lime-500 h-16">
+          <ul className="flex flex-row justify-around h-full items-center">
+            {logout()}
+          </ul>
+        </header>
+        <main className="p-2 lg:h-screen md:h-max flex justify-center items-center">{children}</main>
+        <div>
+          <Footer />
+        </div>
       </div>
-    </div>
+      
+      {getIsLoadingBloqueante && <LoadingBloqueante/>}
+    </>
   );
 };
 
