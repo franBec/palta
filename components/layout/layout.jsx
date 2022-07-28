@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <div className="flex flex-col h-full justify-between bg-slate-800 bg-opacity-80">
+      <div className="flex flex-col h-full justify-between ">
         
         {/* contenido de la barra de arriba */}
         <div>
@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
 
         {/* contenido principal */}
         <div>
-          <main className="p-2 lg:h-screen md:h-max flex justify-center items-center">{children}</main>
+          <main className="my-10 p-2 lg:h-screen md:h-max flex justify-center items-center">{children}</main>
         </div>
 
         {/* contenido del final de la pagina */}

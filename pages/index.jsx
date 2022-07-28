@@ -1,4 +1,4 @@
-import { GiAvocado } from "react-icons/gi";
+import AvocadoLoading from "../components/layout/avocadoLoading";
 import useSWR from "swr";
 import Router from "next/router";
 import LoginComponent from "../components/login/loginComponent"
@@ -67,11 +67,7 @@ const Login = () => {
     //cargando....
     if (!data) {
       return (
-        <div role="status">
-          <svg aria-hidden="true" className="flex justify-center text-lime-500 items-center mr-2 w-8 h-8 animate-spin " viewBox="0 0 50 50" style={{width: "150px", height: "150px"}}>
-            <GiAvocado />
-          </svg>
-      </div>
+        <AvocadoLoading />
       );
     }
     

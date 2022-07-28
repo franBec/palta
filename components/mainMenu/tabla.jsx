@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useCurrentUser } from '../../zustand/SessionStore';
 
+import AvocadoLoading from "../layout/avocadoLoading"
+
 import TablaRow from "./tablaRow";
 
 const Tabla = ({ data, actions }) => {
@@ -16,9 +18,9 @@ const Tabla = ({ data, actions }) => {
 
   const tablaContenido = () =>{
     return(
-      <table className="text-center table-auto w-full  bg-white rounded-xl shadow-md">
+      <table className="text-center table-fixed  bg-white rounded-xl shadow-md">
         <thead>
-          <tr className="border-b w-full bg-lime-400 border-lime-500">
+          <tr className="border-b  bg-lime-400 border-lime-500">
             <th
               scope="col"
               className="text-sm font-medium text-gray-900 px-6 py-4 w-96"
@@ -55,7 +57,7 @@ const Tabla = ({ data, actions }) => {
   }
   
   const tablaCargando = () =>{
-    return <p className="text-5xl text-center">Cargando la tabla...</p>
+    return <AvocadoLoading />
   }
   
   const renderTableContent = () => {

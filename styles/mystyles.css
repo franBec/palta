@@ -17,14 +17,15 @@
 
 .login-container-inputs{
     opacity: 0;
-    transition: all .3s ease;
     z-index: 50;
+    margin-left: 0%;
+    transition: margin-left .7s ease, opacity .1s ease, margin-top .7s ease;
 }
 
 .login-container:focus-within .login-container-inputs{
     opacity: 1;
     margin-left: 50%;
-    transition: all .3s ease;
+    transition: margin-left .5s ease, opacity 1s ease, margin-top .5s ease;
 }
 
 .login-container:focus-within .login-container-logo{
@@ -35,7 +36,7 @@
 .login-container:hover .login-container-inputs{
     opacity: 1;
     margin-left: 50%;
-    transition: all .3s ease;
+    transition: margin-left .5s ease, opacity 1s ease, margin-top .5s ease;
 }
 
 .login-container:hover .login-container-logo{
@@ -54,7 +55,7 @@
         opacity: 1;
         margin-left: 0%;
         margin-top: 80%;
-        transition: all .3s ease;
+        transition: margin-left .5s ease, opacity 1s ease, margin-top .5s ease;
     }
 
     .login-container:focus-within .login-container-logo{
@@ -67,7 +68,7 @@
         opacity: 1;
         margin-left: 0%;
         margin-top: 80%;
-        transition: all .3s ease;
+        transition: margin-left .5s ease, opacity 1s ease, margin-top .5s ease;
     }
 
     .login-container:hover .login-container-logo{
