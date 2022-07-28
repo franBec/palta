@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <div className="flex flex-col h-full justify-between">
+      <div className="flex flex-col h-full justify-between bg-slate-800 bg-opacity-80">
         
         {/* contenido de la barra de arriba */}
         <div>

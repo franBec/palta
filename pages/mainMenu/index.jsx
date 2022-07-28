@@ -231,7 +231,7 @@ const Index = () => {
         { statePermisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
           <div className="flex justify-start my-2">
               <button
-                className="border-2 border-lime-300 bg-white-100 text-green-500 hover:text-white hover:bg-lime-400 p-2  rounded-lg"
+                className="border-2 border-lime-300 bg-white-100 text-green-500 hover:text-white hover:bg-lime-400 p-2 rounded-lg bg-white"
                 onClick={handleAgregarPalta}>
                   <b className="text-xl">+</b>
                 <GiAvocado className="ml-2 text-3xl  inline" />
