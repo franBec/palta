@@ -188,11 +188,11 @@ const Index = () => {
     //cargando....
     if (!data) {
       return (
-        <div role="status">
+        <div role="status" className="h-screen flex justify-center items-center">
           <svg aria-hidden="true" className="flex justify-center text-lime-500 items-center mr-2 w-8 h-8 animate-spin " viewBox="0 0 50 50" style={{width: "150px", height: "150px"}}>
             <GiAvocado />
           </svg>
-      </div>
+        </div>
       );
     }
 
@@ -204,16 +204,16 @@ const Index = () => {
     }
 
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full justify-center">
 
         {/* boton agregar */}
         { statePermisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
           <div className="flex justify-start my-2">
               <button
-                className="border-2 border-lime-300 bg-lime-200 hover:bg-lime-400 p-2  rounded-lg"
-                onClick={handleAgregarPalta}
-              >
-                Agregar <GiAvocado className="ml-2 text-3xl text-white inline" />
+                className="border-2 border-lime-300 bg-white-100 text-green-500 hover:text-white hover:bg-lime-400 p-2  rounded-lg"
+                onClick={handleAgregarPalta}>
+                  <b className="text-xl">+</b>
+                <GiAvocado className="ml-2 text-3xl  inline" />
               </button>
           </div>
         }
@@ -242,7 +242,7 @@ const Index = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center h-full">
         {renderMainContent()}
       </div>
       {showModal?.display && renderModal()}
