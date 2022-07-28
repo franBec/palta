@@ -20,10 +20,10 @@ const ModalChildren = ({setShowModal, onSubmit, data, modo}) => {
   };
 
   const validarInputs = () => {
-    if(paltaInfo.nombre.length < 30 || paltaInfo.nombre.length == 0){
+    if(paltaInfo.nombre.length > 30 || paltaInfo.nombre.length == 0){
       return "Nombre debe ser menor a 30 caracteres y no estar vacio"
     }
-    if(paltaInfo.origen.length < 30 || paltaInfo.origen.length == 0){
+    if(paltaInfo.origen.length > 30 || paltaInfo.origen.length == 0){
       return"Origen debe ser menor a 30 caracteres y no estar vacio"
     }
     return false;
