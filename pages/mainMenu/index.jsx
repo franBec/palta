@@ -12,6 +12,7 @@ import Modal from "../../components/utils/modal";
 import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
 import ModalChildren from "../../components/mainMenu/modalChildren";
 import AvocadoLoading from "../../components/layout/avocadoLoading";
+import IsLogged from "../../components/meta/metaComponent";
 import ErrorComponent from '../../components/utils/errorComponent'
 
 const Index = () => {
@@ -20,7 +21,7 @@ const Index = () => {
 
   //permisos obtenidos en tiempo de login. Se encuentran en una store de zustand
   const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
-  
+
   //proxy de los permisos, necesario para evitar rehydration error
   const [statePermisos, setStatePermisos] = useState()
   useEffect(() => {
@@ -257,6 +258,7 @@ const Index = () => {
 
   return (
     <>
+      {/* <IsLogged /> */}
       <div className="flex justify-center items-center h-full">
         {renderMainContent()}
       </div>

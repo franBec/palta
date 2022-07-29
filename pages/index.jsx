@@ -4,17 +4,21 @@ import Router from "next/router";
 import LoginComponent from "../components/login/loginComponent"
 import { useCurrentUser } from '../zustand/SessionStore';
 import ErrorComponent from "../components/utils/errorComponent";
+import {useLoadingBlockingAnimation} from '../zustand/LoadingStore'
 
 const Login = () => {
 
   //*obtengo setters de la sessionStore de Zustand
   const setUser = useCurrentUser((state) => state.set_CurrentUser)
   const setPermisos = useCurrentUser((state) => state.set_permisosCurrentUser)
+  //getter y setter de la animacion bloqueante
+  const setIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.set_isLoading)
 
   //*fetcher de swr
   const fetchLogin = async (url) => {
     const res = await fetch(url);
     const resjson = await res.json();
+    setIsLoadingBloqueante(false)
     return resjson;
   };
 
