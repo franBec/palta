@@ -1,5 +1,5 @@
 import prisma from "../db/prisma";
-const errorGen =  process.env.ERRORGEN || "Algo salio mal, intente mas tarde"
+const errorGen =  "Algo salió mal, intente mas tarde"
 const paltaController = async (params) => {
   
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> params = " + JSON.stringify(params));
@@ -42,7 +42,7 @@ const findAll = async (params) => {
     const count = await prisma.Palta.count()
 
     return {
-      status: data? 200:404,
+      status: 200,
       success: true,
       data: data,
       errors: [],
@@ -56,9 +56,11 @@ const findAll = async (params) => {
     return {
       status: 500,
       success: false,
-      data: data,
+      data: [],
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -84,6 +86,8 @@ const create = async (params) => {
       data: [],
       errors: [errorGen,error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -106,6 +110,8 @@ const deleteById = async (id) => {
       data: [],
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -137,6 +143,8 @@ const update = async (params) => {
       data: [],
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
