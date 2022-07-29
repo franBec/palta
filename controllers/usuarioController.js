@@ -11,7 +11,8 @@ const usuarioController = async (params) => {
   switch (params.action) {
     case 'create':
       return create(params)
-
+    case 'update':
+      return update(params)
     default:
       return methodNotFound()
   }
@@ -67,6 +68,8 @@ const create = async (params) =>{
       data: [],
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

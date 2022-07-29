@@ -59,6 +59,8 @@ const findAll = async (params) => {
       data: data,
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -84,6 +86,8 @@ const create = async (params) => {
       data: [],
       errors: [errorGen,error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -106,6 +110,8 @@ const deleteById = async (id) => {
       data: [],
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -137,6 +143,8 @@ const update = async (params) => {
       data: [],
       errors: [errorGen, error.toString()],
     };
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
