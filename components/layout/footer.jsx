@@ -139,7 +139,7 @@ const Footer = () => {
             </a>
           </div>
 
-          <div>
+          <div className="hidden xl:block">
             <form action="">
               <div className="grid md:grid-cols-3 gird-cols-1 gap-4 flex justify-center items-center">
                 <div className="md:ml-auto md:mb-6">
@@ -188,7 +188,7 @@ const Footer = () => {
           <div className="mb-6">
             <p>Palta.com patente pendiente</p>
           </div>
-
+          <div className="hidden xl:block">
           <div className="grid lg:grid-cols-4 md:grid-cols-2">
             <div className="mb-6">
               <h5 className="uppercase font-bold mb-2.5">Links</h5>
@@ -297,6 +297,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
+          </div>
           </div>
         </div>
 
