@@ -27,53 +27,7 @@ const methodNotFound = () => (
   }
 )
 
-const create = async (params) =>{
-  console.log(new Date().toUTCString() + " controllers/usuarioController.js -> create  params = " + JSON.stringify(params))
-  try {
-    
-    const errorsInParams = validacionCreate(params)
-    if(errorsInParams.length){
-      return{
-        status: 500,
-        success: false,
-        data: [],
-        errors: errorsInParams,
-      }
-    }
-    
-    const usuario = await prisma.sec_usuario.create({
-       data: {
-         email: params.email,
-         firstName: capitalizarString(params.firstName),
-         lastName: capitalizarString(params.lastName),
-         fechaNacimiento: new Date(params.fechaNacimiento),
-         dni: Number(params.dni),
-         address: params.address,
-         userName: params.userName,
-         telefono: params.telefono,
-         pass: params.pass
-       },
-    });
-
-    return {
-      status: 200,
-      success: true,
-      data: usuario,
-      errors: [],
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      success: false,
-      data: [],
-      errors: [errorGen, error.toString()],
-    };
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-const validacionCreate = (params) =>{
+const validacionCreateUpdate = (params) =>{
   var errores = []
   
   if(!params.email?.length){
@@ -153,6 +107,100 @@ const validacionCreate = (params) =>{
   }
 
   return errores
+}
+
+const create = async (params) =>{
+  console.log(new Date().toUTCString() + " controllers/usuarioController.js -> create  params = " + JSON.stringify(params))
+  try {
+    
+    const errorsInParams = validacionCreateUpdate(params)
+    if(errorsInParams.length){
+      return{
+        status: 500,
+        success: false,
+        data: [],
+        errors: errorsInParams,
+      }
+    }
+    
+    const usuario = await prisma.sec_usuario.create({
+       data: {
+         email: params.email,
+         firstName: capitalizarString(params.firstName),
+         lastName: capitalizarString(params.lastName),
+         fechaNacimiento: new Date(params.fechaNacimiento),
+         dni: Number(params.dni),
+         address: params.address,
+         userName: params.userName,
+         telefono: params.telefono,
+         pass: params.pass
+       },
+    });
+
+    return {
+      status: 200,
+      success: true,
+      data: usuario,
+      errors: [],
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      data: [],
+      errors: [errorGen, error.toString()],
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+const update = async (params) =>{
+  console.log(new Date().toUTCString() + " controllers/usuarioController.js -> update params = " + JSON.stringify(params))
+  try {
+    
+    const errorsInParams = validacionCreateUpdate(params)
+    if(errorsInParams.length){
+      return{
+        status: 500,
+        success: false,
+        data: [],
+        errors: errorsInParams,
+      }
+    }
+    
+    const usuario = await prisma.sec_usuario.update({
+      where: {
+        id: parseInt(params.id),
+      }, 
+      data: {
+        lastUpdate: new Date(),
+        firstName: capitalizarString(params.firstName),
+        lastName: capitalizarString(params.lastName),
+        fechaNacimiento: new Date(params.fechaNacimiento),
+        address: params.address,
+        userName: params.userName,
+        telefono: params.telefono,
+        pass: params.pass
+      },
+    });
+
+    return {
+      status: 200,
+      success: true,
+      data: usuario,
+      errors: [],
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      data: [],
+      errors: [errorGen, error.toString()],
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 export default usuarioController;
