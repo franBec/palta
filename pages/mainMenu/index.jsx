@@ -210,6 +210,7 @@ const Index = () => {
 
     //cargando....
     if (!data) {
+      console.log("AVOCADOOO")
       return <AvocadoLoading/>;
     }
 
@@ -257,20 +258,13 @@ const Index = () => {
     );
   };
 
-  const renderIsLoggedContent = () => {
-    return (
-      <IsLogged>
-        <div className="flex justify-center items-center h-full">
-          {renderMainContent()}
-        </div>
-        {showModal?.display && renderModal()}
-      </IsLogged>
-    )
-  }
-
   return (
     <>
-      {renderIsLoggedContent()}
+      <IsLogged />
+      <div className="flex justify-center items-center h-full">
+        {renderMainContent()}
+      </div>
+      {showModal?.display && renderModal()}
     </>
   );
 };
