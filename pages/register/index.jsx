@@ -14,29 +14,32 @@ const RegisterComponent = () => {
     try {
       console.log("Llegue a entrar")
       //llamada al backend pora verificar credenciales
-      const res = await fetch("api/auth", {
+      const res = await fetch("api/usuario", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
-          action: "register",
-          nuevoUsuario: nuevoUsuario,
+          action: "create",
+          email: nuevoUsuario.email,
+          firstName: nuevoUsuario.firstName,
+          lastName: nuevoUsuario.lastName,
+          fechaNacimiento: nuevoUsuario.fechaNacimiento.toISOString().split('T')[0] + " 00:00:00",
+          dni: nuevoUsuario.dni,
+          address: nuevoUsuario.address,
+          userName: nuevoUsuario.username,
+          telefono: nuevoUsuario.telefono,
+          pass: nuevoUsuario.pass,
         }),
       });
       const resFromBackend = await res.json();
 
       if(!resFromBackend.success){
         //!credenciales invalidas
-        alert('Ocurrió un error inesperado');  
+        console.log(nuevoUsuario)
+        console.log(resFromBackend)
+        alert(resFromBackend.errors[0]);  
       }
       else{
-        //agrego a la sessionStore de zustand los datos recien obtenidos
-        setUser(resFromBackend.data)
-        setPermisos(resFromBackend.permisos)
-
-        //refresco data declarada en swr
-        //Ahora se supone que al hacer fetch, data.loggedIn debe volver true
-        mutate("/api/user/user")
-
+        Router.push("/")
       }
     } catch (error) {
       alert(error.message);
@@ -47,16 +50,15 @@ const RegisterComponent = () => {
 
   //*state del formulario de register
   const [paltaRegister, setPaltaRegister] = useState({
-    nombre: "",
-    apellido: "",
+    firstName: "",
+    lastName: "",
     username: "",
     telefono: "",
     address: "",
     fechaNacimiento: new Date(),
     email: "",
     dni: 0,
-    password: "",
-    passwordRepeat: "",
+    pass: "",
   });
 
   //* handle los cambios en el formulario de register
@@ -98,8 +100,8 @@ const RegisterComponent = () => {
         </div>
         <form className='flex justify-center flex-col items-center gap-4'>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="text" placeholder="Nombre" name="nombre" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
-            <input type="text" placeholder="Apellido" name="apellido" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Nombre" name="firstName" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Apellido" name="lastName" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           <div className='row-auto justify-center gap-4 flex w-full'>
             <input type="text" placeholder="Nombre de usuario" name="username" className="w-full  mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
@@ -125,7 +127,7 @@ const RegisterComponent = () => {
             <input type="number" placeholder="Dni" name="dni" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="password" placeholder="Contraseña" name="password" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="password" placeholder="Contraseña" name="pass" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
             <input type="password" placeholder="Confirmación contraseña" name="passwordRepeat" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           
