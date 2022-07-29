@@ -15,6 +15,10 @@ const usuarioController = async (params) => {
       return update(params)
     case 'deleteById':
       return deleteById(params.id)
+    case 'findAll':
+      return findAll(params)
+    case 'findByEmail':
+      return findByEmail(params.email)
     default:
       return methodNotFound()
   }
@@ -228,5 +232,74 @@ const deleteById = async (id) =>{
     await prisma.$disconnect();
   }
 }
+
+const findAll = async (params) => {
+  console.log(new Date().toUTCString() + " controllers/usuarioController.js -> findAll  params = " + JSON.stringify(params))
+
+  try {
+    const page = Number(params.page) || 1
+    const data = await prisma.sec_usuario.findMany({
+      skip: 10 * ( page - 1 ),
+      take: 10
+    });
+
+    const count = await prisma.sec_usuario.count()
+
+    return {
+      status: 200,
+      success: true,
+      data: data,
+      errors: [],
+      metadata: {
+        total: count,
+        page: page,
+        totalPages: Math.ceil(count / 10)
+      }
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      data: [],
+      errors: [errorGen, error.toString()],
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+const findByEmail = async(email) =>{
+  console.log(new Date().toUTCString() + " controllers/usuarioController.js -> findByMail  params = " + email)
+
+  try {
+    const usuario = await prisma.sec_usuario.findUnique({
+      where: {
+        email: email
+      },
+      include: {
+        roles:{
+          include: {
+            permisos: true,
+          }
+        }
+      },
+    });
+    return {
+      status: 200,
+      success: true,
+      data: usuario,
+      errors: []
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      data: [],
+      errors: [errorGen, error.toString()],
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
+} 
 
 export default usuarioController;

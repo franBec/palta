@@ -42,7 +42,7 @@ const findAll = async (params) => {
     const count = await prisma.Palta.count()
 
     return {
-      status: data? 200:404,
+      status: 200,
       success: true,
       data: data,
       errors: [],
@@ -56,7 +56,7 @@ const findAll = async (params) => {
     return {
       status: 500,
       success: false,
-      data: data,
+      data: [],
       errors: [errorGen, error.toString()],
     };
   } finally {
