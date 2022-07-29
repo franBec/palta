@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useState } from "react";
+import Router from "next/router";
 
 const LoginComponent = ({handleLogin}) => {
     
@@ -24,35 +25,33 @@ const LoginComponent = ({handleLogin}) => {
     e.preventDefault()
     handleLogin(paltaLogin)
   }
+  //*handle register
+  const handleRegister = (e) =>{
+    e.preventDefault()
+    Router.push("/register")
+  }
 
   return (
     <div className='h-screen flex justify-center items-center'>
-      <div className="login-container drop-shadow-xl rounded-lg bg-gradient-to-r from-white to-lime-500 flex justify-center items-center p-10">
-        <div className="login-container-logo">
-          <Image
-            src={"/paltalogo.png"}
-            alt="Picture of the palta"
-            width={200}
-            height={150}
-          />
+      <div className="login-container flex justify-center rounded-full items-center p-10 ">
+        <div className="login-container-logo shadow-xl drop- rounded-full bg-gradient-to-r from-lime-100 to-lime-500 w-1/4 h-1/5 border-4 border-white flex justify-center items-center">
+          <Image src={"/paltalogo.png"} alt="Picture of the palta" width={200} height={100}/>
         </div>
-        <form className="login-container-inputs px-10 flex flex-col justify-center" onSubmit={(e) => handleIniciarSesion(e)}>
-          <input
-            type="text"
-            placeholder="Usuario"
-            name="usuario"
-            className="p-1 mb-1 border border-lime-500"
-            onChange={(e) => handleChangeLoginInputs(e)}
-          />
+        <div className='colorFullPalta shadow-xl bg-gradient-to-r from-lime-300 to-lime-500 '></div>
+        <form className="login-container-inputs px-10 flex flex-col justify-center " onSubmit={(e) => handleIniciarSesion(e)}>
+          <input type="text" placeholder="Usuario" name="usuario" className=" mb-1 palta-input" onChange={(e) => handleChangeLoginInputs(e)} />
           <input
             type="password"
             placeholder="Contraseña"
             name="password"
-            className=" p-1 mt-1 border border-lime-500"
+            className=" mb-1 palta-input"
             onChange={(e) => handleChangeLoginInputs(e)}
           />
-          <button type="submit" className="mt-5 bg-lime-500 border border-gray-500 p-2">
-            Iniciar sesion
+          <button type="submit" className="palta-button mt-5 bg-blue-300 hover:text-white ">
+            Iniciar sesión
+          </button>
+          <button className="palta-button mt-2 bg-white hover:text-white hover:bg-lime-500" onClick={(e) => handleRegister(e)}>
+            Registrarse
           </button>
         </form>
       </div>

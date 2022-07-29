@@ -1,12 +1,14 @@
+
 .login-container{
-    width: 300px;
-    height: 250px;
+    width: 600px;
+    height: 600px;
     transition: all .3s ease;
 }
 
 .login-container:hover, .login-container:focus-within{
-    width: 550px;
-    height: 250px;
+    width: 600px;
+    height: 600px;
+    background: transparent;
     transition: all .3s ease;
 }
 
@@ -29,7 +31,7 @@
 }
 
 .login-container:focus-within .login-container-logo{
-    margin-left: -45%;
+    margin-left: -25%;
     transition: all .3s ease;
 }
 
@@ -40,11 +42,61 @@
 }
 
 .login-container:hover .login-container-logo{
-    margin-left: -45%;
+    margin-left: -25%;
     transition: all .3s ease;
 }
 
+/* pelota de color verde de atras en el login*/
+.colorFullPalta{
+    width: 600px;
+    height: 600px;
+    transition: all 1 ease;
+    opacity: 1;
+    z-index: -30;
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 100%;
+    clip-path: polygon(0 100%, 100% 100%, 100% 0, 100% 0, 66% 0, 51% 0, 43% 0, 0 0);
+    margin-left: 0%;
+    transition: all .5s ease
+}
+
+.login-container:hover  .colorFullPalta{
+    clip-path: polygon(79% 47%, 61% 93%, 14% 16%, 92% 29%, 64% 68%, 29% 85%, 9% 42%, 41% 9%);
+    margin-left: 12%
+}
+
+.login-container:focus-within  .colorFullPalta{
+    clip-path: polygon(79% 47%, 61% 93%, 14% 16%, 92% 29%, 64% 68%, 29% 85%, 9% 42%, 41% 9%);
+    margin-left: 12%
+}
+
+/*Botones*/
+.palta-button, .palta-input{
+    border: 2px linear white;
+    border-radius: 21px;
+    padding: .5rem;
+}
+.palta-input{
+    background: white;
+}
+
+.palta-button:hover, .palta-input:hover{
+    border: 2px linear limegreen;
+}
+
 @media (max-width: 600px) {
+    body{
+        overflow-x: hidden;
+    }
+    .login-container{
+        margin-top: -75%;
+        width: 300px;
+        height: 500px;
+        transition: all .3s ease;
+    }
+
     .login-container:hover, .login-container:focus-within{
         width: 300px;
         height: 500px;
@@ -58,6 +110,13 @@
         transition: margin-left .5s ease, opacity 1s ease, margin-top .5s ease;
     }
 
+    .login-container-logo{
+        margin-left: 0%;
+        margin-top: 40%;
+        width: 300px;
+        transition: all .3s ease;
+    }
+
     .login-container:focus-within .login-container-logo{
         margin-left: 0%;
         margin-top: -80%;
@@ -69,6 +128,26 @@
         margin-left: 0%;
         margin-top: 80%;
         transition: margin-left .5s ease, opacity 1s ease, margin-top .5s ease;
+    }
+
+    .colorFullPalta{
+        transform: scale(0.6);
+        clip-path: polygon(0 0, 100% 0, 100% 30%, 100% 70%, 100% 100%, 0 100%, 0% 70%, 0% 30%);
+        margin-left: 0%;
+        margin-top: 40%;
+    }
+    .login-container:hover  .colorFullPalta{
+        transform: scale(0.6);
+        clip-path: polygon(79% 47%, 61% 93%, 14% 16%, 92% 29%, 64% 68%, 29% 85%, 9% 42%, 41% 9%);
+        margin-left: 0%;
+        margin-top: 40%;
+    }
+    
+    .login-container:focus-within  .colorFullPalta{
+        transform: scale(0.6);
+        clip-path: polygon(79% 47%, 61% 93%, 14% 16%, 92% 29%, 64% 68%, 29% 85%, 9% 42%, 41% 9%);
+        margin-left: 0%;
+        margin-top: 40%;
     }
 
     .login-container:hover .login-container-logo{
