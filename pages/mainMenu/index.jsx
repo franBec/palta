@@ -1,25 +1,37 @@
-import Tabla from "../../components/mainMenu/tabla";
 import useSWR from "swr";
-import Modal from "../../components/utils/modal";
-import { GiAvocado } from "react-icons/gi";
-import ShowMsj from "../../components/layout/showMsj/showMsj";
-import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
-import { withSessionSsr } from "../../lib/session";
+import swal from "sweetalert"
 import { useEffect, useState } from "react";
+import { GiAvocado } from "react-icons/gi";
+import { withSessionSsr } from "../../lib/session";
+
 import { useCurrentUser } from '../../zustand/SessionStore';
+import {useLoadingBlockingAnimation} from '../../zustand/LoadingStore'
+
+import Tabla from "../../components/mainMenu/tabla";
+import Modal from "../../components/utils/modal";
+import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
+import ModalChildren from "../../components/mainMenu/modalChildren";
+import AvocadoLoading from "../../components/layout/avocadoLoading";
 
 const Index = () => {
 
-  const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
-  const [statePermisos, setStatePermisos] = useState()
+  //* ----- zustand stuff -----
 
+  //permisos obtenidos en tiempo de login. Se encuentran en una store de zustand
+  const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
+  
+  //proxy de los permisos, necesario para evitar rehydration error
+  const [statePermisos, setStatePermisos] = useState()
   useEffect(() => {
     setStatePermisos(getPermisos)
   },[getPermisos])
 
+  //getter y setter de la animacion bloqueante
+  const setIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.set_isLoading)
 
-  //*contenido principal
-  //pagination
+  //* --------------------------
+
+  //*pagination
   const [currentPage, updateCurrentPage] = useState(1);
   const shouldUpdatePageNumber = (number) => {
     if (
@@ -31,136 +43,105 @@ const Index = () => {
     }
   };
 
+  //*fetcher del swr
   const fetchPaltas = async (url) => {
     const res = await fetch(url);
     const resjson = await res.json();
     return resjson;
   };
 
+  //*swr
   const { data, error, mutate } = useSWR(
     `api/palta?action=findAll&page=${currentPage}`,
     fetchPaltas
   );
 
-  //error stuff
-  const [msjContent, setMsjContent] = useState("")
-  const [isHidden, setisHidden] = useState(true)
-  const [isError, setisError] = useState(true)
+  //* modal stuff
+  const [showModal, setShowModal] = useState({display: false, modo: 'lectura'});
+  const [paltaEnElModal, setPaltaEnElModal] = useState(null);
+  const [submitDelModal, setSubmitDelModal] = useState(null);
 
-  const renderMainContent = () => {
-    if (!data) {
-      return (
-        <div role="status">
-          <svg aria-hidden="true" className="flex justify-center text-lime-500 items-center mr-2 w-8 h-8 animate-spin " viewBox="0 0 50 50" style={{width: "150px", height: "150px"}}>
-            <GiAvocado />
-          </svg>
-      </div>
-      );
-    }
+  //* swal stuff
+  const callSwal = (success, text) => {
+    //cartel de éxito
 
-    if (error) {
-      setMsjContent(error.toString())
-      setisHidden(false)
-      setisError(true)
-    }
-
-    return (
-      <div className="flex flex-col">
-        <div className="flex justify-start my-2">
-
-        { statePermisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
-          <button
-            className="border-2 border-lime-300 bg-lime-200 hover:bg-lime-400 p-2  rounded-lg"
-            onClick={handleClickBotonAgregar}
-          >
-            Agregar
-            <GiAvocado className="ml-2 text-3xl text-white inline" />
-          </button>
-        }
-        </div>
-        <div>
-          <Tabla
-            data={data.data}
-            setPaltaInfo={setPaltaInfo}
-            setShowModal={setShowModal}
-            deletePalta={deletePalta}
-          />
-          <div className="mt-2">
-            <PaginateNavbar
-              currentPage={data?.metadata?.page}
-              totalPages={data?.metadata?.totalPages}
-              handleClick={shouldUpdatePageNumber}
-            />
-          </div>
-        </div>
-        <ShowMsj
-          isHidden={isHidden}
-          setisHidden={setisHidden}
-          isError={isError}
-        >
-          {msjContent}
-        </ShowMsj>
-      </div>
-    );
-  };
-
-  //*modal
-  const [showModal, setShowModal] = useState({
-    display: false,
-    modo: "lectura",
-  });
-  const [paltaInfo, setPaltaInfo] = useState({
-    id: null,
-    nombre: "",
-    origen: "",
-  });
-
-  const handleChangeModalInputs = (e) => {
-    const { name, value } = e.target;
-
-    setPaltaInfo({
-      ...paltaInfo,
-      [name]: value,
+    swal(text, {
+      icon: success? 'success':'error',
+      button: false,
+      timer: 3000
     });
-  };
+  }  
 
-  const errorControl = (res, exitoString, functionName) => {
-    if(!res?.success){
-      setMsjContent(res.errors[0].toString())
-      res.errors.map((error) => {
-        console.log("ERROR - " + functionName + " - " + error)
-      })
-      setisHidden(false)
-      setisError(true)
-    }else{ //control si todo ok
-      setMsjContent(exitoString)
-      setisHidden(false)
-      setisError(false)
-    }
+  //* ----- ABM de palta - HANDLE CLICK EN BOTONES ------
+
+  const handleAgregarPalta = () => {
+    setPaltaEnElModal(null);
+    setSubmitDelModal({ action: savePalta });
+    setShowModal({display: true, modo: 'alta'});
   }
 
-  const savePalta = async () => {
+  const handleEditarPalta = (id) => {
+    setPaltaEnElModal(data.data.filter((it) => it.id === id)[0]);
+    setSubmitDelModal({ action: editPalta });
+    setShowModal({display: true, modo: 'editar'});
+  }
+
+  const handleEliminarPalta = (id) =>{
+    swal({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminada la palta, no se puede recuperar",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        deletePalta(id)
+      }
+    });
+  }
+
+  const handleVerDetallesPalta = (id) => {
+    setPaltaEnElModal(data.data.filter((it) => it.id === id)[0]);
+    setSubmitDelModal({ action: editPalta });
+    setShowModal({display: true, modo: 'lectura'});
+  }
+
+
+  //* ------ ABM de palta - ACCIONES ------
+
+  //*Alta
+  const savePalta = async (form) => {
+    
+    setIsLoadingBloqueante(true)
+
+    setShowModal({ display: false, modo: "lectura" });
+
     const res = await fetch("api/palta", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         action: "create",
-        nombre: paltaInfo.nombre,
-        origen: paltaInfo.origen,
-      }),
+        nombre: form.nombre,
+        origen: form.origen,
+      }),    
     });
+    
 
     const resFromBackend = await res.json();
-
-    //control si falla
-    errorControl(resFromBackend, "Palta creada con éxito", "savePalta");
-
-    setShowModal({ display: false, modo: "lectura" });
+    
+    setIsLoadingBloqueante(false)
+    
+    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta agregada exitosamente':'Algo salió mal...')
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   };
 
+  //*Baja
   const deletePalta = async (id) => {
+
+    setIsLoadingBloqueante(true)
+
     const res = await fetch("api/palta", {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
@@ -169,109 +150,118 @@ const Index = () => {
         id: id,
       }),
     });
-
+    
     const resFromBackend = await res.json();
 
-    //control si falla
-    errorControl(resFromBackend, "Palta borrada con éxito", "deletePalta");
+    setIsLoadingBloqueante(false)
 
+    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta eliminada exitosamente':'Algo salió mal...')
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
 
-  const editPalta = async () => {
+  //*Modificar
+  const editPalta = async (form) => {
+    setShowModal({display: false, modo: "lectura"})
+
+    setIsLoadingBloqueante(true)
+
     const res = await fetch("api/palta", {
       method: "PUT",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         action: "update",
-        id: paltaInfo.id,
-        nombre: paltaInfo.nombre,
-        origen: paltaInfo.origen,
+        id: form.id,
+        nombre: form.nombre,
+        origen: form.origen,
       }),
     });
 
+
     const resFromBackend = await res.json();
 
-    //control si falla
-    errorControl(resFromBackend, "Palta editada con éxito", "editPalta");
+    setIsLoadingBloqueante(false)
 
-    setShowModal({display: false, modo: "lectura"})
+    callSwal(resFromBackend.success, resFromBackend.success ? 'Palta editada exitosamente':'Algo salió mal...')
     updateCurrentPage(1)
     mutate(`api/palta?action=findAll&page=${currentPage}`);
   }
 
-  const renderModal = (modo) => {
+  //* renderizado del modal
+  const renderModal = () => {
     return (
       <Modal
-        setShowModal={setShowModal}
         modalTitle="Info de la palta 🥑"
+        setShowModal={setShowModal}
       >
-        <>
-          <div>
-            <div>
-              <label>Nombre:</label>
-              <input
-                className="ml-2 pl-1 border border-gray-500"
-                type="text"
-                value={paltaInfo.nombre ?? ""}
-                readOnly={modo === "lectura"}
-                name="nombre"
-                onChange={(e) => handleChangeModalInputs(e)}
-              />
-            </div>
-            <div>
-              <label>Origen:</label>
-              <input
-                className="ml-2 pl-1 border border-gray-500"
-                value={paltaInfo.origen ?? ""}
-                readOnly={modo === "lectura"}
-                name="origen"
-                onChange={(e) => handleChangeModalInputs(e)}
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-            <button
-              className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={() =>
-                setShowModal({ display: false, modo: "lectura" })
-              }
-            >
-              Close
-            </button>
-            {showModal.modo === "alta" && (<button
-              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={() => savePalta()}
-            >
-              Save Changes
-            </button>)}
-            {showModal.modo === "editar" && (<button
-              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={() => editPalta()}
-            >
-              EDITAR
-            </button>)}
-          </div>
-        </>
+        <ModalChildren
+          setShowModal={setShowModal}
+          onSubmit={submitDelModal}
+          data={paltaEnElModal}
+          modo={showModal.modo}
+        />
       </Modal>
     );
   };
 
-  const handleClickBotonAgregar = () => {
-    setPaltaInfo({ id: null, nombre: "", origen: "" });
-    setShowModal({ display: true, modo: "alta" });
+  //*renderizado principal
+  const renderMainContent = () => {
+
+    //cargando....
+    if (!data) {
+      return <AvocadoLoading/>;
+    }
+
+    //algo salio mal
+    if (error) {
+      setMsjContent(error.toString())
+      setisHidden(false)
+      setisError(true)
+    }
+
+    return (
+      <div className="flex flex-col h-full justify-center">
+
+        {/* boton agregar */}
+        { statePermisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
+          <div className="flex justify-start my-2">
+              <button
+                className="border-2 bg-white border-lime-300 w-full md:w-auto bg-white-100 text-green-500 hover:text-white hover:bg-lime-400 p-2  rounded-lg"
+                onClick={handleAgregarPalta}>
+                  <b className="text-xl">+</b>
+                <GiAvocado className="ml-2 text-3xl  inline" />
+              </button>
+          </div>
+        }
+        
+        {/* datos obtenidos */}
+        <div className="space-y-2">
+          <Tabla
+            data={data.data}
+            actions={{
+              handleEditarPalta,
+              handleEliminarPalta,
+              handleVerDetallesPalta
+            }}
+          />
+
+          <PaginateNavbar
+            currentPage={data?.metadata?.page}
+            totalPages={data?.metadata?.totalPages}
+            handleClick={shouldUpdatePageNumber}
+          />
+
+        </div>
+      </div>
+    );
   };
 
   return (
     <>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center h-full">
         {renderMainContent()}
       </div>
-      {showModal.display && renderModal(showModal.modo)}
+      {showModal?.display && renderModal()}
     </>
   );
 };

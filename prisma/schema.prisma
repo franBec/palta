@@ -1,30 +1,10 @@
 datasource db {
   provider = "mysql"
-  url      = "mysql://admin:sa123@192.168.1.68:3306/palta_dev"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
-}
-
-// model Post {
-//   id        Int      @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   title     String   @db.VarChar(255)
-//   content   String?
-//   published Boolean  @default(false)
-//   author    User     @relation(fields: [authorId], references: [id])
-//   authorId  Int
-// }
-
-model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  firstName   String?
-  LastName    String?
-  //posts   Post[]
-  //profile Profile?
 }
 
 model Palta {
@@ -35,40 +15,40 @@ model Palta {
 
 //Usuario - Roles - Permisos
 
-model sec_usuario{
-  id              Int         @id @default(autoincrement())
-  lastUpdate      DateTime    @updatedAt
-  created         DateTime    @default(now())
-  estado          Int         @default(1)
-  email           String      @unique
-  firstName       String?     @db.VarChar(100)
-  lastName        String?     @db.VarChar(100)
+model sec_usuario {
+  id              Int       @id @default(autoincrement())
+  lastUpdate      DateTime  @updatedAt
+  created         DateTime  @default(now())
+  estado          Int       @default(1)
+  email           String    @unique
+  firstName       String?   @db.VarChar(100)
+  lastName        String?   @db.VarChar(100)
   fechaNacimiento DateTime?
   dni             Int?
-  adress          String?     @db.VarChar(255)
-  userName        String?     @db.VarChar(100)
+  adress          String?   @db.VarChar(255)
+  userName        String?   @db.VarChar(100)
   telefono        String?
-  roles           sec_rol[]   @relation("sec_usuario_roles") 
-  pass            String      @db.VarChar(100)
+  roles           sec_rol[] @relation("sec_usuario_roles")
+  pass            String    @db.VarChar(100)
 }
 
-model sec_rol{
-  id              Int           @id @default(autoincrement())
-  lastUpdate      DateTime      @updatedAt
-  created         DateTime      @default(now())
-  estado          Int           @default(1)
-  nombre          String?       @db.VarChar(255)
-  description     String?       @db.VarChar(255)
-  usuario         sec_usuario[] @relation("sec_usuario_roles") 
-  permisos        sec_permiso[] @relation("sec_rol_permisos") 
+model sec_rol {
+  id          Int           @id @default(autoincrement())
+  lastUpdate  DateTime      @updatedAt
+  created     DateTime      @default(now())
+  estado      Int           @default(1)
+  nombre      String?       @db.VarChar(255)
+  description String?       @db.VarChar(255)
+  usuario     sec_usuario[] @relation("sec_usuario_roles")
+  permisos    sec_permiso[] @relation("sec_rol_permisos")
 }
 
-model sec_permiso{
-  id              Int         @id @default(autoincrement())
-  lastUpdate      DateTime    @updatedAt
-  created         DateTime    @default(now())
-  estado          Int         @default(1)
-  nombre          String?     @db.VarChar(255)
-  description     String?     @db.VarChar(255)
-  roles           sec_rol[]   @relation("sec_rol_permisos") 
+model sec_permiso {
+  id          Int       @id @default(autoincrement())
+  lastUpdate  DateTime  @updatedAt
+  created     DateTime  @default(now())
+  estado      Int       @default(1)
+  nombre      String?   @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  roles       sec_rol[] @relation("sec_rol_permisos")
 }
