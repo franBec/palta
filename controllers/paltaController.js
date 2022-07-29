@@ -1,5 +1,5 @@
 import prisma from "../db/prisma";
-const errorGen =  process.env.ERRORGEN || "Algo salio mal, intente mas tarde"
+const errorGen =  "Algo salió mal, intente mas tarde"
 const paltaController = async (params) => {
   
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> params = " + JSON.stringify(params));
