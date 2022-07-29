@@ -17,14 +17,14 @@ model Palta {
 
 model sec_usuario {
   id              Int       @id @default(autoincrement())
-  lastUpdate      DateTime  @updatedAt
+  lastUpdate      DateTime? @db.DateTime(0)
   created         DateTime  @default(now())
   estado          Int       @default(1)
   email           String    @unique
   firstName       String?   @db.VarChar(100)
   lastName        String?   @db.VarChar(100)
   fechaNacimiento DateTime?
-  dni             Int?
+  dni             Int       @unique
   address         String?   @db.VarChar(255)
   userName        String?   @db.VarChar(100)
   telefono        String?
