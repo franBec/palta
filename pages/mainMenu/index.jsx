@@ -20,7 +20,7 @@ const Index = () => {
 
   //permisos obtenidos en tiempo de login. Se encuentran en una store de zustand
   const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
-  
+
   //proxy de los permisos, necesario para evitar rehydration error
   const [statePermisos, setStatePermisos] = useState()
   useEffect(() => {
@@ -210,7 +210,6 @@ const Index = () => {
 
     //cargando....
     if (!data) {
-      console.log("AVOCADOOO")
       return <AvocadoLoading/>;
     }
 
