@@ -12,6 +12,7 @@ import Modal from "../../components/utils/modal";
 import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
 import ModalChildren from "../../components/mainMenu/modalChildren";
 import AvocadoLoading from "../../components/layout/avocadoLoading";
+import IsLogged from "../../components/meta/metaComponent";
 
 const Index = () => {
 
@@ -256,29 +257,37 @@ const Index = () => {
     );
   };
 
+  const renderIsLoggedContent = () => {
+    return (
+      <IsLogged>
+        <div className="flex justify-center items-center h-full">
+          {renderMainContent()}
+        </div>
+        {showModal?.display && renderModal()}
+      </IsLogged>
+    )
+  }
+
   return (
     <>
-      <div className="flex justify-center items-center h-full">
-        {renderMainContent()}
-      </div>
-      {showModal?.display && renderModal()}
+      {renderIsLoggedContent()}
     </>
   );
 };
 
 export default Index;
 
-export const getServerSideProps = withSessionSsr(async function({ req, res }) {
-  const user = req.session.user;
+// export const getServerSideProps = withSessionSsr(async function({ req, res }) {
+//   const user = req.session.user;
 
-  if (user === undefined) {
-    res.setHeader("location", "/");
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
+//   if (user === undefined) {
+//     res.setHeader("location", "/");
+//     res.statusCode = 302;
+//     res.end();
+//     return { props: {} };
+//   }
 
-  return {
-    props: {user: req.session.user },
-  };
-});
+//   return {
+//     props: {user: req.session.user },
+//   };
+// });

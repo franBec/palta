@@ -25,7 +25,7 @@ model sec_usuario {
   lastName        String?   @db.VarChar(100)
   fechaNacimiento DateTime?
   dni             Int?
-  adress          String?   @db.VarChar(255)
+  address         String?   @db.VarChar(255)
   userName        String?   @db.VarChar(100)
   telefono        String?
   roles           sec_rol[] @relation("sec_usuario_roles")
