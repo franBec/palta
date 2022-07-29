@@ -13,6 +13,8 @@ const usuarioController = async (params) => {
       return create(params)
     case 'update':
       return update(params)
+    case 'deleteById':
+      return deleteById(params.id)
     default:
       return methodNotFound()
   }
@@ -187,6 +189,30 @@ const update = async (params) =>{
 
     return {
       status: 200,
+      success: true,
+      data: usuario,
+      errors: [],
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      data: [],
+      errors: [errorGen, error.toString()],
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+const deleteById = async (id) =>{
+  console.log(new Date().toUTCString() + " controllers/usuarioController.js -> deleteById  id = " + id)
+
+  try {
+    const usuario = await prisma.sec_usuario.delete({ where: { id: Number(id) } });
+
+    return {
+      status:200,
       success: true,
       data: usuario,
       errors: [],
