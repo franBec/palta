@@ -259,7 +259,7 @@ const Index = () => {
 
   return (
     <>
-      <IsLogged />
+      {/* <IsLogged /> */}
       <div className="flex justify-center items-center h-full">
         {renderMainContent()}
       </div>
@@ -270,17 +270,17 @@ const Index = () => {
 
 export default Index;
 
-// export const getServerSideProps = withSessionSsr(async function({ req, res }) {
-//   const user = req.session.user;
+export const getServerSideProps = withSessionSsr(async function({ req, res }) {
+  const user = req.session.user;
 
-//   if (user === undefined) {
-//     res.setHeader("location", "/");
-//     res.statusCode = 302;
-//     res.end();
-//     return { props: {} };
-//   }
+  if (user === undefined) {
+    res.setHeader("location", "/");
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
 
-//   return {
-//     props: {user: req.session.user },
-//   };
-// });
+  return {
+    props: {user: req.session.user },
+  };
+});
