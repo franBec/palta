@@ -12,6 +12,7 @@ import Modal from "../../components/utils/modal";
 import PaginateNavbar from "../../components/utils/pagination/paginateNavbar";
 import ModalChildren from "../../components/mainMenu/modalChildren";
 import AvocadoLoading from "../../components/layout/avocadoLoading";
+import ErrorComponent from '../../components/utils/errorComponent'
 
 const Index = () => {
 
@@ -214,9 +215,7 @@ const Index = () => {
 
     //algo salio mal
     if (error) {
-      setMsjContent(error.toString())
-      setisHidden(false)
-      setisError(true)
+      <ErrorComponent message={error.toString()}/>
     }
 
     return (
