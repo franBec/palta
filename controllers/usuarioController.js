@@ -35,6 +35,8 @@ const methodNotFound = () => (
 
 const validacionCreateUpdate = (params) =>{
   var errores = []
+
+  //validar si email y dni ya existen y comparar con la base de datos
   
   if(!params.email?.length){
     errores.push('email es obligatorio')
