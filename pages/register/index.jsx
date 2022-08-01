@@ -97,15 +97,15 @@ const RegisterComponent = () => {
         </div>
         <form className='flex justify-center flex-col items-center gap-4'>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="text" placeholder="Nombre" name="firstName" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
-            <input type="text" placeholder="Apellido" name="lastName" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Nombre" name="firstName" className=" w-full mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Apellido" name="lastName" className=" w-full mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="text" placeholder="Nombre de usuario" name="username" className="w-full  mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
-            <input type="text" placeholder="Telefono" name="telefono" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Nombre de usuario" name="username" className="w-full  mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Telefono" name="telefono" className=" w-full mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="text" placeholder="Dirección" name="address" className="w-full  palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Dirección" name="address" className="w-full  palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
             <div className="w-full bg-transparent palta-input">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker label="Fecha de nacimiento" value={fechaNacimiento ?? new Date()} name="fechaNacimiento" onChange={(newValue) => handleNacimientoInput(newValue)}  
@@ -120,12 +120,12 @@ const RegisterComponent = () => {
             </div>
           </div>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="text" placeholder="Email" name="email" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
-            <input type="number" placeholder="Dni" name="dni" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="text" placeholder="Email" name="email" className=" w-full mt-1 palta-input"required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="number" placeholder="Dni" name="dni" className=" w-full mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           <div className='row-auto justify-center gap-4 flex w-full'>
-            <input type="password" placeholder="Contraseña" name="pass" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
-            <input type="password" placeholder="Confirmación contraseña" name="passwordRepeat" className=" w-full mt-1 palta-input" required="true" onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="password" placeholder="Contraseña" name="pass" className=" w-full mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
+            <input type="password" placeholder="Confirmación contraseña" name="passwordRepeat" className=" w-full mt-1 palta-input" required={true} onChange={(e) => handleChangeRegisterInputs(e)}/>
           </div>
           
           <div className='row-auto justify-center gap-4 flex w-full'>
