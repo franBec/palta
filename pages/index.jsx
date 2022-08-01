@@ -22,14 +22,13 @@ const Login = () => {
   };
 
   //*swr
-  const { data, error } = useSWR(
-    "/api/auth/sessionInfo",
-    fetchLogin
-  );
+  const { data, error, mutate } = useSWR("/api/auth/sessionInfo",fetchLogin);
 
   //*action del boton login
   const login = async ({usuario,password}) => {
     try {
+
+      setIsLoadingBloqueante(true)
 
       //llamada al backend pora verificar credenciales
       const res = await fetch("api/auth/login", {

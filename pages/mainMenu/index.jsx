@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import useSWRImmutable from "swr/immutable";
 
 import swal from "sweetalert"
 import { useEffect, useState } from "react";
@@ -17,11 +16,9 @@ import ErrorComponent from '../../components/utils/errorComponent'
 
 const Index = () => {
 
-  //* ----- zustand stuff -----
+  //* ----- loading bloqueante -----
   //getter y setter de la animacion bloqueante
   const setIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.set_isLoading)
-
-  //* --------------------------
 
   //*pagination
   const [currentPage, updateCurrentPage] = useState(1);
@@ -59,7 +56,7 @@ const Index = () => {
   };
 
   //*PERMISOS - swr
-  const { data: data } = useSWRImmutable("/api/auth/sessionInfo", fetchSessionInfo);
+  const { data: sessionData, error: sessionError } = useSWR("/api/auth/sessionInfo", fetchSessionInfo);
 
   //* modal stuff
   const [showModal, setShowModal] = useState({display: false, modo: 'lectura'});
@@ -218,7 +215,7 @@ const Index = () => {
     }
 
     //algo salio mal
-    if (error) {
+    if (error || sessionError) {
       return <ErrorComponent message={error.toString()}/>
     }
 
@@ -226,7 +223,7 @@ const Index = () => {
       <div className="flex flex-col h-full justify-center">
 
         {/* boton agregar */}
-        { data?.data?.permisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
+        { sessionData?.data?.permisos?.some(it => it.nombre === "PALTA_AGREGAR_BUTTON") &&
           <div className="flex justify-start my-2">
               <button
                 className="border-2 bg-white border-lime-300 w-full md:w-auto bg-white-100 text-green-500 hover:text-white hover:bg-lime-400 p-2  rounded-lg"
@@ -246,7 +243,7 @@ const Index = () => {
               handleEliminarPalta,
               handleVerDetallesPalta
             }}
-            permisos={data?.data?.permisos}
+            permisos={sessionData?.data?.permisos}
           />
 
           <PaginateNavbar
@@ -259,6 +256,9 @@ const Index = () => {
       </div>
     );
   };
+
+  //*desactivar loading bloqueante en montado
+  useEffect(()=>{setIsLoadingBloqueante(false)},[])
 
   return (
     <>
