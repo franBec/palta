@@ -22,7 +22,7 @@ const Login = () => {
   };
 
   //*swr
-  const { data, error, mutate } = useSWR(
+  const { data, error } = useSWR(
     "/api/auth/sessionInfo",
     fetchLogin
   );
@@ -52,10 +52,7 @@ const Login = () => {
 
         //agrego a la sessionStore de zustand los datos recien obtenidos
         setUser(resFromBackend.data.lastName)
-
-        //refresco data declarada en swr
-        //Ahora se supone que al hacer fetch, data.loggedIn debe volver true
-        mutate("/")
+        Router.push("/mainMenu")
 
       }
     } catch (error) {
@@ -79,10 +76,13 @@ const Login = () => {
     }
 
     //verificamos si debemos quedarnos en el log in o movernos a main menu
-    if(data?.isLoggedIn){
+    if(data.isLoggedIn){
       Router.push("/mainMenu")
     }else{
-      return <LoginComponent handleLogin={login}/>
+      setUser(null)
+      return (
+        <LoginComponent handleLogin={login}/>
+      )
     }
   };
 
