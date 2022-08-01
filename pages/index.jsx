@@ -61,7 +61,6 @@ const Login = () => {
 
   //*renderizado
   const renderMainContent = () => {
-    
     //cargando....
     if (!data) {
       return (
@@ -69,9 +68,14 @@ const Login = () => {
       );
     }
     
+    //No hay .env
+    if (!process.env.NEXT_PUBLIC_CHECK) {
+      return <ErrorComponent message={'No se encuentra archivo .env'}/>;
+    }
+
     //algo salió mal
     if (error) {
-      return <ErrorComponent message={'Algo malió sal'}/>;
+      return <ErrorComponent message={'Algo malió sal: '+error.toString()}/>;
     }
 
     //verificamos si debemos quedarnos en el log in o movernos a main menu
