@@ -19,7 +19,7 @@ const Logout = () => {
     }
 
     return (
-        <Link href="/api/logout">
+        <Link href="/api/auth/logout">
             <button className="rounded flex justify-center items-center border-2 my-3 bg-red-500 border-red-800 p-2" onClick={handleLogout}>
                 <AiOutlinePoweroff />
                 <span className="pl-2">Log out </span>

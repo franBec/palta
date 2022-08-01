@@ -1,5 +1,5 @@
-import { withSessionRoute } from "../../lib/session";
-import userController from "../../controllers/userController";
+import { withSessionRoute } from "../../../lib/session";
+import loginController from "../../../controllers/loginController";
 
 const ERROR_CREDENTIALS = "Usuario y/o contraseña incorrecta";
 
@@ -26,7 +26,7 @@ async function loginRoute(req, res) {
         }
 
         const params = body
-        const resFromController = await userController(params)
+        const resFromController = await loginController(params)
         console.log("Login: ",resFromController)
         if(resFromController.success){
             req.session.user = resFromController;

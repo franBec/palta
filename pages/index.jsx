@@ -24,7 +24,7 @@ const Login = () => {
 
   //*swr
   const { data, error, mutate } = useSWR(
-    "/api/user/user",
+    "/api/auth/sessionInfo",
     fetchLogin
   );
 
@@ -33,7 +33,7 @@ const Login = () => {
     try {
 
       //llamada al backend pora verificar credenciales
-      const res = await fetch("api/auth", {
+      const res = await fetch("api/auth/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
@@ -57,7 +57,7 @@ const Login = () => {
 
         //refresco data declarada en swr
         //Ahora se supone que al hacer fetch, data.loggedIn debe volver true
-        mutate("/api/user/user")
+        mutate("/")
 
       }
     } catch (error) {

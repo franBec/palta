@@ -1,5 +1,9 @@
 import paltaController from "../../../controllers/paltaController";
 
+import { withSessionRoute } from "../../../lib/session";
+
+export default withSessionRoute(handler);
+
 /* 
   Todo respuesta de esta api, tiene la siguiente estructura:
   {
@@ -13,12 +17,18 @@ import paltaController from "../../../controllers/paltaController";
 */
 
 //prettier-ignore
-export default async function handler(req, res) {
+async function handler(req, res) {
   const { method, body, query } = req;
+  const user = req.session.user;
   
   var log = ''
   var errors = [] //un arreglo de strings donde se van a listar los errores
 
+  //check if 401
+  if (!user || user.isLoggedIn === false) {
+    errors.push(new Date().toUTCString() + " api/palta/index.js -> Status 401 Unauthorized")
+    return res.status(401).json({ errors });
+  }
 
   switch (method) {
     case "POST":
