@@ -27,11 +27,9 @@ async function loginRoute(req, res) {
 
         const params = body
         const resFromController = await loginController(params)
-        console.log("Login: ",resFromController)
         if(resFromController.success){
             req.session.user = resFromController;
             await req.session.save();
-            console.log("Sesion guardada")
             return res.status(200).json(resFromController)
         }
         else{

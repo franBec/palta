@@ -12,7 +12,6 @@ const RegisterComponent = () => {
   //*action del boton registrarse
   const handleRegister = async (nuevoUsuario) => {
     try {
-      console.log("Llegue a entrar")
       //llamada al backend pora verificar credenciales
       const res = await fetch("api/usuario", {
         method: "POST",
@@ -34,8 +33,6 @@ const RegisterComponent = () => {
 
       if(!resFromBackend.success){
         //!credenciales invalidas
-        console.log(nuevoUsuario)
-        console.log(resFromBackend)
         alert(resFromBackend.errors[0]);  
       }
       else{

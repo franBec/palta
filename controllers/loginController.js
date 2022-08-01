@@ -1,5 +1,4 @@
 import prisma from "../db/prisma";
-const errorGen =  process.env.ERRORGEN || "Algo salio mal, intente mas tarde"
 const loginController = async (params) => {
   
   console.log(new Date().toUTCString() + " controllers/paltaController.js -> params = " + JSON.stringify(params));
@@ -15,7 +14,6 @@ const loginController = async (params) => {
 //LOGIN Paltas
 const login = async (params) => {
     try {
-      var permisosList = []
       const user = await prisma.sec_usuario.findUnique({
         where: {
           email: params.usuario
@@ -26,42 +24,43 @@ const login = async (params) => {
           }}
         },
       });
-      console.log("login - User: ",user)
-      if(user){
-        if(!(user.pass === params.password)){
-          return {
-            success: false,
-            data: []
-          };
-        }
+
+      if(user && user.pass === params.password){
+        var permisosList = []
+
         if(user?.roles){
-          user?.roles.forEach(it => {
+          user?.roles.forEach(it=>{
             if(it?.permisos){
-              it?.permisos.forEach(pms => {
-                permisosList.push(pms)
+              it?.permisos.forEach(pms=>{
+                if(! permisosList.some(it=> it.id === pms.id)){
+                  permisosList.push(pms)
+                }
               })
             }
-          });
+          })
         }
+
         return {
           success: true,
-          data: user,
-          permisos: permisosList,
+          data: {...user, permisos: permisosList},
           errors: [],
         };
-      }else{
-        return {
-          success: false,
-          data: []
-        };
+
       }
+      
+      return {
+        success: false,
+        data: [],
+        errors: ['Credenciales inválidas']
+      };
+      
     } catch (error) {
       return {
         success: false,
         data: [],
         errors: [
           "Palta - login: Algo salio muy mal en el servidor, intenta mas tarde",
-          error
+          error.message
         ],
       };
     }

@@ -1,21 +1,10 @@
-import { useEffect, useState } from "react";
-import { useCurrentUser } from '../../zustand/SessionStore';
-
 import AvocadoLoading from "../layout/avocadoLoading"
-
 import TablaRow from "./tablaRow";
 
-const Tabla = ({ data, actions }) => {
+const Tabla = ({ paltas, actions, permisos }) => {
+  //* ----- diferentes estados de la tabla ----- 
 
-  //*obtengo permisos de la sessionStore de zustand
-  const getPermisos = useCurrentUser((state) => state.get_permisosCurrentUser)
-
-  //*proxy de los permisos
-  const [statePermisos, setStatePermisos] = useState()
-  useEffect(() => {
-    setStatePermisos(getPermisos)
-  },[getPermisos])
-
+  //la tabla tiene contenido para mostrar
   const tablaContenido = () =>{
     return(
       <table className="text-center table-fixed  bg-white rounded-xl shadow-md">
@@ -48,23 +37,33 @@ const Tabla = ({ data, actions }) => {
           </tr>
         </thead>
         <tbody>
-          {data?.map((it) => (
-            <TablaRow key={it.id} palta={it} permisos={statePermisos} actions={actions}/>
+          {paltas?.map((it) => (
+            <TablaRow key={it.id} palta={it} permisos={permisos} actions={actions}/>
           ))}
         </tbody>
       </table>
     )
   }
   
+  //la tabla está cargando
   const tablaCargando = () =>{
     return <AvocadoLoading />
   }
+
+  //la tabla está vacia
+  const tablaVacia = () =>{
+    return <p className="text-center text-3xl font-bold">No hay paltas registradas</p>
+  }
   
   const renderTableContent = () => {
-    if(data){
-      return tablaContenido()
+    if(!paltas){
+      return tablaCargando()
     }
-    return tablaCargando()
+    if(!paltas.length){
+      return tablaVacia()
+    }
+
+    return tablaContenido()
   };
 
   return renderTableContent();

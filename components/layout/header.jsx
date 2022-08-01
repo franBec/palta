@@ -32,7 +32,7 @@ const Header = () => {
                                 height={40}
                                 className="rounded-full"
                             />
-                            <h1 className="ml-2">Bienvenido {stateUser?.lastName+" "}{stateUser?.userName}</h1>
+                            <h1 className="ml-2">Bienvenido {stateUser}</h1>
                         </div>
 
                         <div>

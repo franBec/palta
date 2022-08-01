@@ -10,7 +10,6 @@ const Login = () => {
 
   //*obtengo setters de la sessionStore de Zustand
   const setUser = useCurrentUser((state) => state.set_CurrentUser)
-  const setPermisos = useCurrentUser((state) => state.set_permisosCurrentUser)
   //getter y setter de la animacion bloqueante
   const setIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.set_isLoading)
 
@@ -52,8 +51,7 @@ const Login = () => {
       else{
 
         //agrego a la sessionStore de zustand los datos recien obtenidos
-        setUser(resFromBackend.data)
-        setPermisos(resFromBackend.permisos)
+        setUser(resFromBackend.data.lastName)
 
         //refresco data declarada en swr
         //Ahora se supone que al hacer fetch, data.loggedIn debe volver true

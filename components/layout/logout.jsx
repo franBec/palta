@@ -8,14 +8,12 @@ const Logout = () => {
 
     //* ------ Zustand: al momento de desloguearse, se limpia el usuario y los permisos
     const setUser = useCurrentUser((state) => state.set_CurrentUser)
-    const setPermisos = useCurrentUser((state) => state.set_permisosCurrentUser)
     //getter y setter de la animacion bloqueante
     const setIsLoadingBloqueante = useLoadingBlockingAnimation((state) => state.set_isLoading)
 
     const handleLogout = async () => {
         setIsLoadingBloqueante(true)
         setUser(null)
-        setPermisos(null)
     }
 
     return (
